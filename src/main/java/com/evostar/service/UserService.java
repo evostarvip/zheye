@@ -39,7 +39,7 @@ public class UserService {
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
         String head = "/default.jpg";//默认头像
-        user.setHeadUrl(head);
+        user.setHead_url(head);
         user.setPassword(CommonUtils.MD5(password+user.getSalt()));
         userDAO.addUser(user);
 
@@ -47,9 +47,10 @@ public class UserService {
         //是否7天免登录
         int expire = rememberme ? 7*24*60 : 120;
         String token = JwtUtils.createJWTToken(user.getId(),expire);
-        map.put("token", token);
-        map.put("name",user.getName());
-        map.put("head_url",user.getHeadUrl());
+        user.setToken(token);
+        user.setPassword(null);
+        user.setSalt(null);
+        map.put("data",user);
         return map;
     }
 
@@ -79,9 +80,10 @@ public class UserService {
         //是否7天免登录
         int expire = rememberme ? 7*24*60 : 120;
         String token = JwtUtils.createJWTToken(user.getId(),expire);
-        map.put("token", token);
-        map.put("name",user.getName());
-        map.put("head_url",user.getHeadUrl());
+        user.setToken(token);
+        user.setPassword(null);
+        user.setSalt(null);
+        map.put("data",user);
         return map;
     }
 
