@@ -28,6 +28,7 @@ public class LoginController {
     public User reg(HttpServletResponse response, String username, String password,
                     @RequestParam(value="rememberme", defaultValue = "false") boolean rememberme) throws IOException {
         User user = new User();
+        String usernames = "";
         try {
             Map<String, Object> map = userService.register(username, password,rememberme);
             if (map.containsKey("data")) {
