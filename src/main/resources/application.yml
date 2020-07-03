@@ -3,10 +3,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql:///zheye
+    #url: jdbc:h2:mem:zheye;MODE=MYSQL;DATABASE_TO_UPPER=false;
     username: root
     password: evostar2020
-    schema: classpath:mappers/init-schema.sql
-    initialization-mode: embedded
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
 

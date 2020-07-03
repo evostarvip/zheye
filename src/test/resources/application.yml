@@ -1,0 +1,17 @@
+##连接池
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:zheye-testing;MODE=MYSQL;DATABASE_TO_UPPER=false;
+    username: root
+    password: evostar2020
+    schema: classpath:sql.schema/*.sql
+    initialization-mode: embedded
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+#别名扫描目录
+#加载映射文件
+mybatis:
+  type-aliases-package: com.evostar.model
+  mapper-locations: mappers/*Mapper.xml

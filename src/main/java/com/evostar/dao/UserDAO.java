@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.TabableView;
+import java.util.List;
+
 @Mapper
 @Repository
 public interface UserDAO {
@@ -14,10 +17,12 @@ public interface UserDAO {
     String SELECT_FIELDS = " id, name, head_url ";
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
             ") values (#{name},#{password},#{salt},#{headUrl})"})
-    int addUser(User user);
+    void addUser(User user);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
     User selectById(int id);
+
+    List<User> selectByIds(@Param("userIdList") List<Integer> userIdList);
 
     @Select({"select ", All_FIELDS, " from ", TABLE_NAME, " where name=#{name}"})
     User selectByName(String name);
