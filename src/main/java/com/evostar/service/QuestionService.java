@@ -17,8 +17,9 @@ public class QuestionService {
         return questionDAO.selectLatestQuestions(userId, offset, limit);
     }
     public int addQuestion(Question question) {
-        question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
-        question.setContent(HtmlUtils.htmlEscape(question.getContent()));
-        return questionDAO.addQuestion(question) > 0 ? question.getId() : 0;
+        question.setTitle(question.getTitle());
+        question.setContent(question.getContent());
+        int id = questionDAO.addQuestion(question);
+        return id > 0 ? id : 0;
     }
 }
