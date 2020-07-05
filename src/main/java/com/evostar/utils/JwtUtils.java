@@ -29,7 +29,8 @@ public final class JwtUtils {
 
         String token= JWT.create()
                 .withHeader(map)
-                .withClaim("userId",userId.toString())
+                .withClaim("userId", userId.toString())
+                .withClaim("version", "1.0")
                 .withIssuedAt(nowDate)//对应 paylaod iat 节点：生效时间
                 .withExpiresAt(expireDate) //对应 paylaod  exp 签发人 节点：过期时间
                 .sign(algorithm);
@@ -38,13 +39,11 @@ public final class JwtUtils {
     /**
      * 验证 token
      * */
-    public static String verifyJWTToken(String token) throws JWTVerificationException {
+    public static Map<String, Claim> verifyJWTToken(String token) throws JWTVerificationException {
         Algorithm algorithm= Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT jwt =verifier.verify(token);
-        Map<String, Claim> claims=jwt.getClaims();
-        Claim claim = claims.get("userId");
-        return claim.asString();
+        return jwt.getClaims();
     }
 
     /**

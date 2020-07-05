@@ -33,7 +33,7 @@ class LoginControllerTest extends ApplicationTests {
         map.add("username","zhangSan");
         map.add("password","1234567");
         ResponseEntity<String> entity = restTemplate.postForEntity("/login/", map, String.class);
-
+        System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
 

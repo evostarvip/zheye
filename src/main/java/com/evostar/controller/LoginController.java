@@ -80,7 +80,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "layout", method = RequestMethod.GET)
+    @RequestMapping(value = "/layout", method = RequestMethod.GET)
     @ApiOperation(value = "退出登录")
     @ResponseBody
     public String layout(HttpServletResponse response){
