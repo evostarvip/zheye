@@ -25,7 +25,7 @@ public class LoginController {
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping(value = {"/reg/"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/reg"}, method = {RequestMethod.POST})
     @ResponseBody
     @ApiOperation("注册")
     @ApiImplicitParams({
