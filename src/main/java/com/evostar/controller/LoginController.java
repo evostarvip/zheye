@@ -34,7 +34,8 @@ public class LoginController {
             @ApiImplicitParam(name = "password", value = "密码", dataType = "String", defaultValue = "123456", required = true),
             @ApiImplicitParam(name = "rememberme", value = "是否7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
     })
-    public Map<String, String> reg(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "rememberme") Boolean rememberme) throws Exception {
+    public Map<String, String> reg(String username, String password, @RequestParam(required = false) Boolean rememberme) throws Exception {
+        System.out.println("username:"+username+",password:"+password);
         if(userService.register(username, password) > 0){
             Map<String, String> result = new HashMap<>();
             result.put("msg", "SUCCESS");
