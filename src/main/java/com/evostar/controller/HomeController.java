@@ -1,9 +1,11 @@
 package com.evostar.controller;
 
 import com.evostar.exception.MyException;
+import com.evostar.model.Answer;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.model.User;
+import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
 import com.evostar.service.UserService;
 import com.evostar.vo.IndexVO;
@@ -25,34 +27,32 @@ public class HomeController {
     private QuestionService questionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AnswerService answerService;
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
     @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", defaultValue = "1")
-    public List<IndexVO> index(@RequestBody Map<String, String> map) {
-        int page = Integer.parseInt(map.get("page"));
-        page = page > 0 ? page : 1;
+    public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page) {
         int limit = 10;
         int offset = (page - 1) * limit;
         List<Question> questionList = questionService.getLatestQuestions(0, offset, limit);
-
         //如果questionList没有数据，停止执行直接返回空数据
         if(questionList == null){
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         List<Integer> userIdList = questionList.stream().map(Question::getUserId).collect(Collectors.toList());
-        //问题id列表
-        List<Integer> questionIdList = questionList.stream().map(Question::getId).collect(Collectors.toList());
         List<User> userList = userService.getUserByIds(userIdList);
         return questionList.stream().map(question -> {
+            Answer answer = answerService.getLastAnswerByQuestionId(question.getId());
             IndexVO indexVO = new IndexVO();
-            indexVO.setQuestion(question);
-            indexVO.setFollowCount(0);
-            for(User user:userList){
-                if(question.getUserId() == user.getId()){
-                    indexVO.setUser(user);
-                    break;
-                }
-            }
+//            indexVO.setQuestion(question);
+//            indexVO.setFollowCount(0);
+//            for(User user:userList){
+//                if(question.getUserId() == user.getId()){
+//                    indexVO.setUser(user);
+//                    break;
+//                }
+//            }
             return indexVO;
         }).collect(Collectors.toList());
     }

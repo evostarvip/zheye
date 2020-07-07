@@ -12,6 +12,7 @@
         <result property="supportCount" column="support_count"></result>
         <result property="unsupportCount" column="unsupport_count"></result>
     </resultMap>
+
     <select id="selectLatestQuestions" resultMap="questionMap">
         SELECT
         <include refid="selectFields"/>

@@ -66,6 +66,7 @@ public class LoginController {
         response.addCookie(cookie);
         result.put("msg", "SUCCESS");
         result.put("redirect", "http:baidu.com");
+        result.put("headUrl",user.getHeadUrl());
         return result;
     }
 
