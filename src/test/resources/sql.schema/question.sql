@@ -8,6 +8,7 @@ CREATE TABLE `question` (
     `comment_count` int(11) NOT NULL,
     `support_count` int(11) DEFAULT '0',
     `unsupport_count` int(11) DEFAULT '0',
+    `review_num` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `date_index` (`created_date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;

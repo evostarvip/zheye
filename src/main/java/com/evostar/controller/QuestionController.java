@@ -39,8 +39,10 @@ public class QuestionController {
             @ApiImplicitParam(name = "content", value = "问题的描述", required = false)
 
     })
-    public Map<String, String> addQuestion(HttpServletResponse response, String title, String content){
+    public Map<String, String> addQuestion(@RequestBody Map<String, String> map){
         try {
+            String title = map.get("title");
+            String content = map.get("content");
             Question question = new Question();
             question.setContent(content);
             question.setCreatedDate(new Date());
@@ -63,7 +65,8 @@ public class QuestionController {
     @ApiOperation(value = "问题详情")
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
     @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
-    public Question questionDetail(@PathVariable("qid") int qid) {
+    public Question questionDetail(@RequestBody Map<String, String> map) {
+        int qid = Integer.parseInt(map.get("qid"));
         Question question =  questionService.getById(qid);
         if (question == null){
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());

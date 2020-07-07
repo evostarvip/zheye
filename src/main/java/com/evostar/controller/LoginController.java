@@ -34,7 +34,9 @@ public class LoginController {
             @ApiImplicitParam(name = "password", value = "密码", dataType = "String", defaultValue = "123456", required = true),
             @ApiImplicitParam(name = "rememberme", value = "是否7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
     })
-    public Map<String, String> reg(String username, String password, @RequestParam(required = false) Boolean rememberme) throws Exception {
+    public Map<String, String> reg(@RequestBody Map<String, String> map) throws Exception {
+        String username = map.get("username");
+        String password = map.get("password");
         System.out.println("username:"+username+",password:"+password);
         if(userService.register(username, password) > 0){
             Map<String, String> result = new HashMap<>();
@@ -52,8 +54,10 @@ public class LoginController {
             @ApiImplicitParam(name="password", value = "密码",dataType = "String", defaultValue = "123456", required = true),
             @ApiImplicitParam(name="rememberme", value = "开启7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
     })
-    public Map<String, String> login(Model model, HttpServletResponse response, String username, String password,
-                      @RequestParam(value="rememberme", defaultValue = "false") boolean rememberme) throws Exception {
+    public Map<String, String> login(@RequestBody Map<String, String> map, HttpServletResponse response) throws Exception {
+        String username = map.get("username");
+        String password = map.get("password");
+        Boolean rememberme = Boolean.valueOf(map.get("rememberme"));
         User user = userService.login(username, password, rememberme);
         Map<String, String> result = new HashMap<>();
         Cookie cookie = new Cookie("token",user.getToken());

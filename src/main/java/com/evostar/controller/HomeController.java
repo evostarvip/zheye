@@ -11,13 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,7 +28,9 @@ public class HomeController {
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
     @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", defaultValue = "1")
-    public List<IndexVO> index(HttpServletResponse response, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public List<IndexVO> index(@RequestBody Map<String, String> map) {
+        int page = Integer.parseInt(map.get("page"));
+        page = page > 0 ? page : 1;
         int limit = 10;
         int offset = (page - 1) * limit;
         List<Question> questionList = questionService.getLatestQuestions(0, offset, limit);
@@ -40,6 +40,8 @@ public class HomeController {
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         List<Integer> userIdList = questionList.stream().map(Question::getUserId).collect(Collectors.toList());
+        //问题id列表
+        List<Integer> questionIdList = questionList.stream().map(Question::getId).collect(Collectors.toList());
         List<User> userList = userService.getUserByIds(userIdList);
         return questionList.stream().map(question -> {
             IndexVO indexVO = new IndexVO();
