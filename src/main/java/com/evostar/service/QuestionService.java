@@ -1,6 +1,7 @@
 package com.evostar.service;
 
 import com.evostar.dao.QuestionDAO;
+import com.evostar.model.Answer;
 import com.evostar.model.Question;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -22,5 +22,6 @@ public class IndexVO {
     @ApiModelProperty(value = "回答的内容的简介")
     private String summary;
 
+
     private ActionsVO actions;
 }

@@ -8,6 +8,7 @@ import com.evostar.model.User;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
 import com.evostar.service.UserService;
+import com.evostar.vo.ActionsVO;
 import com.evostar.vo.IndexVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,19 +42,26 @@ public class HomeController {
         if(questionList == null){
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
-        List<Integer> userIdList = questionList.stream().map(Question::getUserId).collect(Collectors.toList());
-        List<User> userList = userService.getUserByIds(userIdList);
         return questionList.stream().map(question -> {
+            System.out.println("question:"+question.getId());
             Answer answer = answerService.getLastAnswerByQuestionId(question.getId());
             IndexVO indexVO = new IndexVO();
-//            indexVO.setQuestion(question);
-//            indexVO.setFollowCount(0);
-//            for(User user:userList){
-//                if(question.getUserId() == user.getId()){
-//                    indexVO.setUser(user);
-//                    break;
-//                }
-//            }
+            indexVO.setId(question.getId());
+            indexVO.setTitle(question.getTitle());
+            if(answer != null){
+                indexVO.setAnswer(answer.getUser());
+                String answerContent = answer.getContent();
+                answerContent = answerContent.length() > 30 ? answerContent.substring(0,30)+"......" : answerContent;
+                indexVO.setSummary(answerContent);
+            }
+            ActionsVO actionsVO = new ActionsVO();
+            actionsVO.setCollect(false);
+            actionsVO.setAgreeNUm(0);
+            actionsVO.setDisagree(false);
+            actionsVO.setIsAgree(false);
+            actionsVO.setLike(false);
+            actionsVO.setReviewNum(0);
+            indexVO.setActions(actionsVO);
             return indexVO;
         }).collect(Collectors.toList());
     }

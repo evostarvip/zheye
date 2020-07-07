@@ -15,4 +15,5 @@ public class Answer {
     private int commentCount;
     private int supportCount;
     private int unsupportCount;
+    private User user;
 }

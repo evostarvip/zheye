@@ -54,7 +54,7 @@ public class LoginController {
             @ApiImplicitParam(name="password", value = "密码",dataType = "String", defaultValue = "123456", required = true),
             @ApiImplicitParam(name="rememberme", value = "开启7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
     })
-    public Map<String, String> login(@RequestBody Map<String, String> map, HttpServletResponse response) throws Exception {
+    public Map<String, String> login(@RequestBody Map<String, String> map, HttpServletResponse response) {
         String username = map.get("username");
         String password = map.get("password");
         Boolean rememberme = Boolean.valueOf(map.get("rememberme"));

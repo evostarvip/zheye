@@ -8,7 +8,8 @@ public enum MsgCodeEnum {
     ACCOUNT_REGISTERED(304, "账号已被注册"),
     REGISTERED_FAILED(305, "注册失败"),
     DATA_NONE(306, "数据不存在"),
-    OPERATION_FAILED(307, "操作失败")
+    OPERATION_FAILED(307, "操作失败"),
+    PARAM_EMPTY(308, "参数不能为空")
     ;
 
     private int code;
