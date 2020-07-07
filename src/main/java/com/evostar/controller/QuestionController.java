@@ -1,6 +1,8 @@
 package com.evostar.controller;
 
+import com.evostar.exception.MyException;
 import com.evostar.model.HostHolder;
+import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.QuestionService;
 import io.swagger.annotations.Api;
@@ -11,13 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -38,25 +39,24 @@ public class QuestionController {
             @ApiImplicitParam(name = "content", value = "问题的描述", required = false)
 
     })
-    public String addQuestion(HttpServletResponse response, String title, String content){
+    public Map<String, String> addQuestion(HttpServletResponse response, String title, String content){
         try {
             Question question = new Question();
             question.setContent(content);
             question.setCreatedDate(new Date());
             question.setTitle(title);
             question.setUserId(hostHolder.getUser().getId());
-
+            Map<String, String> result = new HashMap<>();
             if(questionService.addQuestion(question) > 0){
-                response.setStatus(200);
-                return "success";
+                result.put("msg", "SUCCESS");
+                return result;
             }else{
-                response.setStatus(400);
+                throw new MyException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
             }
         } catch (Exception e) {
             logger.error("增加题目失败" + e.getMessage());
-            response.setStatus(500);
+            throw new MyException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
         }
-        return "error";
     }
 
 
@@ -64,6 +64,10 @@ public class QuestionController {
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
     @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
     public Question questionDetail(@PathVariable("qid") int qid) {
-        return questionService.getById(qid);
+        Question question =  questionService.getById(qid);
+        if (question == null){
+            throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
+        }
+        return question;
     }
 }

@@ -144,12 +144,8 @@ public class SensitiveService implements InitializingBean {
             if (isSymbol(c)) {
                 continue;
             }
-            TrieNode node = tempNode.getSubNode(c);
-
-            if (node == null) { // 没初始化
-                node = new TrieNode();
-                tempNode.addSubNode(c, node);
-            }
+            TrieNode node = new TrieNode();
+            tempNode.addSubNode(c, node);
 
             tempNode = node;
 

@@ -2,6 +2,8 @@ package com.evostar.interceptor;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.evostar.dao.UserDAO;
+import com.evostar.exception.MyException;
+import com.evostar.exception.UnauthorizedException;
 import com.evostar.model.HostHolder;
 import com.evostar.model.User;
 import com.evostar.utils.EhcacheUtils;
@@ -56,8 +58,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             hostHolder.setUser(user);
             return true;
         }else{
-            System.out.println("没有token，要去登录");
-            return false;
+            throw new UnauthorizedException();
         }
     }
 
