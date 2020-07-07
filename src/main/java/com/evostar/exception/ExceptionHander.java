@@ -12,17 +12,16 @@ import java.util.Map;
 @ControllerAdvice    //"控制器增强"注解
 public class ExceptionHander {
 
-    @ExceptionHandler(Exception.class)//用于注释异常处理类，value属性指定需要拦截的异常类型
-    @ResponseBody //和controller方法上的用法一样，会将方法中的返回值转json后返回给客户端
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> errorHandler(Exception e) {        //捕获异常并获取异常处理对象
+    public Map<String, Object> errorHandler(Exception e) {
         Map<String, Object> result = new HashMap<String, Object>();
-        //result.put("code", "500");
         result.put("msg", e.getMessage());//获取异常信息
         return result;
     }
 
-    @ExceptionHandler(MyException.class)    //在这里将value属性改为自定义的异常类，表示将拦截MyException异常
+    @ExceptionHandler(MyException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> errorHandler(MyException e) {

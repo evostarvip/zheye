@@ -20,9 +20,9 @@ class LoginControllerTest extends ApplicationTests {
     public void testReg(){
         //三个参数，username、password、rememberme
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("username","zhangSan");
+        map.add("username","zhangSan77");
         map.add("password","123456");
-        ResponseEntity<String> entity = restTemplate.postForEntity("/reg/", map, String.class);
+        ResponseEntity<String> entity = restTemplate.postForEntity("/reg", map, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(),HttpStatus.OK);
@@ -33,8 +33,8 @@ class LoginControllerTest extends ApplicationTests {
         //三个参数，username、password、rememberme
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("username","zhangSan");
-        map.add("password","1234567");
-        ResponseEntity<String> entity = restTemplate.postForEntity("/login/", map, String.class);
+        map.add("password","123456");
+        ResponseEntity<String> entity = restTemplate.postForEntity("/login", map, String.class);
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
