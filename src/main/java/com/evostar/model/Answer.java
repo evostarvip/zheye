@@ -1,5 +1,6 @@
 package com.evostar.model;
 
+import com.evostar.vo.ActionsVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,4 +28,6 @@ public class Answer {
     private int unsupportCount;
     @ApiModelProperty(value = "回答者本人的信息")
     private User answer;
+
+    private ActionsVO actions;
 }

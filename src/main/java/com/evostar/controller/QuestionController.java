@@ -7,6 +7,7 @@ import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
+import com.evostar.vo.ActionsVO;
 import com.evostar.vo.QuestionDetailVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,11 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -78,10 +79,24 @@ public class QuestionController {
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, 0, 20);
+        answerList.stream().map(answer -> {
+            ActionsVO actionsVO = new ActionsVO();
+            //暂留，后面开发点赞、评论时填充值
+            actionsVO.setCollect(false);
+            actionsVO.setAgreeNum(0);
+            actionsVO.setDisagree(false);
+            actionsVO.setIsAgree(false);
+            actionsVO.setLike(false);
+            actionsVO.setReviewNum(0);
+            answer.setActions(actionsVO);
+            return answer;
+        }).collect(Collectors.toList());
+
         QuestionDetailVO detailVO = new QuestionDetailVO();
         detailVO.setId(question.getId());
         detailVO.setTitle(question.getTitle());
         detailVO.setDetail(question.getContent());
+        detailVO.setReviewNum(question.getReviewNum());
         String summary = question.getContent() != null && question.getContent().length() > 30 ? question.getContent().substring(0, 30)+"......" : question.getContent();
         detailVO.setSummary(summary);
         detailVO.setAnswerList(answerList);
@@ -129,6 +144,18 @@ public class QuestionController {
     public List<Answer> answerList(int qid, @RequestParam(required = false,defaultValue = "1") int page){
         int limit = 20;
         int offset = (page - 1) * limit;
-        return answerService.getAnswerListByQidDesc(qid, offset, limit);
+        List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, offset, limit);
+        return answerList.stream().map(answer -> {
+            ActionsVO actionsVO = new ActionsVO();
+            //暂留，后面开发点赞、评论时填充值
+            actionsVO.setCollect(false);
+            actionsVO.setAgreeNum(0);
+            actionsVO.setDisagree(false);
+            actionsVO.setIsAgree(false);
+            actionsVO.setLike(false);
+            actionsVO.setReviewNum(0);
+            answer.setActions(actionsVO);
+            return answer;
+        }).collect(Collectors.toList());
     }
 }

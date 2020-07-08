@@ -29,4 +29,6 @@ public class Question {
     private int supportCount;
     @ApiModelProperty(value = "踩的数量")
     private int unSupportCount;
+    @ApiModelProperty(value = "浏览量")
+    private int reviewNum;
 }
