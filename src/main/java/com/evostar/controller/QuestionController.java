@@ -158,4 +158,22 @@ public class QuestionController {
             return answer;
         }).collect(Collectors.toList());
     }
+
+    @ApiOperation(value = "获取回答的详情")
+    @ApiImplicitParam(name = "aid", value = "answer的id", defaultValue = "1", dataType = "int")
+    @RequestMapping(value = "/answer/detail", method = RequestMethod.GET)
+    public Answer getAnswerDetail(int aid){
+        Answer answer = answerService.getAnswerById(aid);
+        ActionsVO actionsVO = new ActionsVO();
+        //暂留，后面开发点赞、评论时填充值
+        actionsVO.setCollect(false);
+        actionsVO.setAgreeNum(0);
+        actionsVO.setDisagree(false);
+        actionsVO.setIsAgree(false);
+        actionsVO.setLike(false);
+        actionsVO.setReviewNum(0);
+        answer.setActions(actionsVO);
+        answer.setActions(actionsVO);
+        return answer;
+    }
 }

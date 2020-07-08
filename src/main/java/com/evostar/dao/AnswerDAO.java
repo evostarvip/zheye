@@ -24,4 +24,6 @@ public interface AnswerDAO {
 
     public List<Answer> getAnswerListByQidDesc(@Param(value = "id") int qid, @Param(value = "offset") int offset,
             @Param("limit") int limit);
+
+    public Answer getAnswerById(int aid);
 }

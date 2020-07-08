@@ -50,4 +50,17 @@
         limit #{offset},#{limit}
     </select>
 
+    <select id="getAnswerById" parameterType="int" resultMap="answerMap">
+        select
+        answer.*,user.id as uid,user.name as uname,user.head_url
+        from
+        <include refid="table"></include>
+        left join
+        `user`
+        on `answer`.user_id = `user`.id
+        where
+        answer.id = #{id}
+        order by answer.id desc
+    </select>
+
 </mapper>

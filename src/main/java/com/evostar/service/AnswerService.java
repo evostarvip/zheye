@@ -38,4 +38,8 @@ public class AnswerService {
     public List<Answer> getAnswerListByQidDesc(int qid, int offset, int limit){
         return answerDAO.getAnswerListByQidDesc(qid, offset, limit);
     }
+
+    public Answer getAnswerById(int aid){
+        return answerDAO.getAnswerById(aid);
+    }
 }
