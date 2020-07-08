@@ -71,7 +71,7 @@ public class QuestionController {
 
     @ApiOperation(value = "问题详情")
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
-    @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
+    @RequestMapping(value = "/question/detail", method = {RequestMethod.GET})
     public QuestionDetailVO questionDetail(@RequestParam(required = true) int qid) {
         Question question =  questionService.getById(qid);
         if (question == null){
