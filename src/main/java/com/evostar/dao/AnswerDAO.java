@@ -23,7 +23,7 @@ public interface AnswerDAO {
             ") values (#{userId},#{questionId},#{content},#{createdDate})"})
     public int addAnswer(Answer answer);
 
-    @Select({"select * from ",TABLE_NAME," where question_id = #{qid} " +
+    @Select({"select ",SELECT_FIELDS," from ",TABLE_NAME," where question_id = #{qid} " +
             "order by id desc limit #{offset},#{limit}",})
     public List<Answer> getAnswerListByQid(
             @Param(value = "qid") int qid, @Param(value = "offset") int offset,

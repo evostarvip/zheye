@@ -4,16 +4,8 @@
 <mapper namespace="com.evostar.dao.QuestionDAO">
     <sql id="table">question</sql>
     <sql id="selectFields">id, title, content, comment_count,created_date,user_id</sql>
-    <resultMap id="questionMap" type="question">
-        <id property="id" column="id"></id>
-        <result property="userId" column="user_id"></result>
-        <result property="createdDate" column="created_date"></result>
-        <result property="commentCount" column="comment_count"></result>
-        <result property="supportCount" column="support_count"></result>
-        <result property="unsupportCount" column="unsupport_count"></result>
-    </resultMap>
 
-    <select id="selectLatestQuestions" resultMap="questionMap">
+    <select id="selectLatestQuestions" resultType="question">
         SELECT
         <include refid="selectFields"/>
         FROM

@@ -4,11 +4,7 @@
 <mapper namespace="com.evostar.dao.UserDAO">
     <sql id="table">user</sql>
     <sql id="selectFields"> id, name, password, salt, head_url </sql>
-    <resultMap id="userMap" type="user">
-        <id property="id" column="id"></id>
-        <result property="headUrl" column="head_url"></result>
-    </resultMap>
-    <select id="selectByIds" resultMap="userMap">
+    <select id="selectByIds" resultType="user">
         select
             <include refid="selectFields"></include>
         from
