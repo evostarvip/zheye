@@ -54,6 +54,7 @@ public class HomeController {
                 indexVO.setSummary(answerContent);
             }
             ActionsVO actionsVO = new ActionsVO();
+            //暂留，后面开发点赞、评论时填充值
             actionsVO.setCollect(false);
             actionsVO.setAgreeNUm(0);
             actionsVO.setDisagree(false);
