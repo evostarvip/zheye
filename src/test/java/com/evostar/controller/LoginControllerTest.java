@@ -2,6 +2,8 @@ package com.evostar.controller;
 
 import com.evostar.ApplicationTests;
 import com.evostar.model.User;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -31,10 +33,11 @@ class LoginControllerTest extends ApplicationTests {
     @Test
     public void testLogin(){
         //三个参数，username、password、rememberme
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("username","zhangSan");
-        map.add("password","123456");
-        ResponseEntity<String> entity = restTemplate.postForEntity("/login", map, String.class);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("username","zhangSan");
+        map.put("password","123456");
+        String m = JSONObject.toJSONString(map);
+        ResponseEntity<String> entity = restTemplate.postForEntity("/login", m, String.class);
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }

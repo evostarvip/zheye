@@ -12,7 +12,7 @@ public class ActionsVO {
     private Boolean isAgree;
 
     @ApiModelProperty(value = "点赞的数量")
-    private int agreeNUm;
+    private int agreeNum;
 
     @ApiModelProperty(value = "是否踩了")
     private boolean isDisagree;

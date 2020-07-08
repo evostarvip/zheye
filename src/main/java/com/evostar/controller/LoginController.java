@@ -62,7 +62,7 @@ public class LoginController {
         Map<String, String> result = new HashMap<>();
         Cookie cookie = new Cookie("token",user.getToken());
         cookie.setPath("/");
-        cookie.setMaxAge(2 * 60 * 60);//两个小时
+        cookie.setMaxAge(24 * 60 * 60 * 7);//两个小时
         response.addCookie(cookie);
         result.put("msg", "SUCCESS");
         result.put("redirect", "http:baidu.com");
