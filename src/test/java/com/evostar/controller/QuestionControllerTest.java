@@ -35,7 +35,7 @@ class QuestionControllerTest extends ApplicationTests {
         cookies.add("token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTQwMTQ0NDMsInVzZXJJZCI6IjMiLCJ2ZXJzaW9uIjoiMS4wIiwiaWF0IjoxNTk0MDA3MjQzfQ.c-7g3u1rW_L9XUR5ZH2E-CT8xTOtc2wQYAKlfvUwi8g; Path=/; HttpOnly");       //在 header 中存入cookies
         headers.put(HttpHeaders.COOKIE,cookies);
 
-        ResponseEntity<Map> entity = restTemplate.exchange("/index?qid="+qid, HttpMethod.GET, new HttpEntity<String>(headers), Map.class);
+        ResponseEntity<Map> entity = restTemplate.exchange("/question/detail?qid="+qid, HttpMethod.GET, new HttpEntity<String>(headers), Map.class);
         System.out.println(entity.getBody());
     }
 }

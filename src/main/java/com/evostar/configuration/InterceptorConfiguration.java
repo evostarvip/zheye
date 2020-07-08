@@ -16,7 +16,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(tokenInterceptor).addPathPatterns("/**").
                 excludePathPatterns("/index").
                 excludePathPatterns("/reg").
-                excludePathPatterns("/question/**").
+                excludePathPatterns("/question/detail/**").
                 excludePathPatterns("/login").
                 excludePathPatterns("/layout").
                 excludePathPatterns("/*.html").
