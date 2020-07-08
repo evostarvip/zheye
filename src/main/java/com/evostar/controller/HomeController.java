@@ -47,7 +47,7 @@ public class HomeController {
             indexVO.setTitle(question.getTitle());
             if(answer != null){
                 indexVO.setAnswer(answer.getAnswer());
-                String answerContent = answer.getContent();
+                String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
                 answerContent = answerContent.length() > 30 ? answerContent.substring(0,30)+"......" : answerContent;
                 indexVO.setSummary(answerContent);
             }
