@@ -61,7 +61,6 @@ public class LoginController {
         User user = userService.login(username, password, rememberme);
         Map<String, String> result = new HashMap<>();
         Cookie cookie = new Cookie("token",user.getToken());
-        cookie.setDomain("localhost:8080");
         cookie.setPath("/");
         cookie.setMaxAge(24 * 60 * 60 * 7);//两个小时
         response.addCookie(cookie);
