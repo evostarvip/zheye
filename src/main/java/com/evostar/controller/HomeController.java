@@ -4,7 +4,6 @@ import com.evostar.exception.MyException;
 import com.evostar.model.Answer;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
-import com.evostar.model.User;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
 import com.evostar.service.UserService;
@@ -12,7 +11,6 @@ import com.evostar.vo.ActionsVO;
 import com.evostar.vo.IndexVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

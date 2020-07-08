@@ -37,6 +37,7 @@ class LoginControllerTest extends ApplicationTests {
         map.put("username","zhangSan");
         map.put("password","123456");
         String m = JSONObject.toJSONString(map);
+        
         ResponseEntity<String> entity = restTemplate.postForEntity("/login", m, String.class);
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
