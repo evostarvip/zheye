@@ -13,7 +13,7 @@
         <result property="commentCount" column="comment_count"></result>
         <result property="supportCount" column="support_count"></result>
         <result property="unsupportCount" column="unsupport_count"></result>
-        <association property="user" javaType="user">
+        <association property="answer" javaType="user">
             <id property="id" column="uid"></id>
             <result property="name" column="uname"></result>
             <result property="headUrl" column="head_url"></result>
@@ -32,6 +32,22 @@
             answer.question_id = #{id}
         order by answer.id desc
         limit 1
+    </select>
+
+
+
+    <select id="getAnswerListByQidDesc" resultMap="answerMap">
+        select
+        answer.*,user.id as uid,user.name as uname,user.head_url
+        from
+        <include refid="table"></include>
+        left join
+        `user`
+        on `answer`.user_id = `user`.id
+        where
+        answer.question_id = #{id}
+        order by answer.id desc
+        limit #{offset},#{limit}
     </select>
 
 </mapper>

@@ -7,6 +7,7 @@ import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
+import com.evostar.vo.QuestionDetailVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -71,18 +72,20 @@ public class QuestionController {
     @ApiOperation(value = "问题详情")
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
     @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
-    public Question questionDetail(@RequestBody Map<String, String> map) {
-        String qid = map.get("qid");
-        if(qid == null){
-            throw new MyException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid"+MsgCodeEnum.PARAM_EMPTY.getMsg());
-        }
-        int questionId = Integer.parseInt(qid);
-        Question question =  questionService.getById(questionId);
+    public QuestionDetailVO questionDetail(@RequestParam(required = true) int qid) {
+        Question question =  questionService.getById(qid);
         if (question == null){
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
-        List<Answer> answerList = answerService.getAnswerListByQid(questionId, 20, 1);
-        return question;
+        List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, 0, 20);
+        QuestionDetailVO detailVO = new QuestionDetailVO();
+        detailVO.setId(question.getId());
+        detailVO.setTitle(question.getTitle());
+        detailVO.setDetail(question.getContent());
+        String summary = question.getContent() != null && question.getContent().length() > 30 ? question.getContent().substring(0, 30)+"......" : question.getContent();
+        detailVO.setSummary(summary);
+        detailVO.setAnswerList(answerList);
+        return detailVO;
     }
 
     @ApiOperation(value = "回答问题")
@@ -126,6 +129,6 @@ public class QuestionController {
     public List<Answer> answerList(int qid, @RequestParam(required = false,defaultValue = "1") int page){
         int limit = 20;
         int offset = (page - 1) * limit;
-        return answerService.getAnswerListByQid(qid, offset, limit);
+        return answerService.getAnswerListByQidDesc(qid, offset, limit);
     }
 }

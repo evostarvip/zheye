@@ -35,7 +35,7 @@ public class AnswerService {
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
     }
-    public List<Answer> getAnswerListByQid(int qid, int offset, int limit){
-        return answerDAO.getAnswerListByQid(qid, offset, limit);
+    public List<Answer> getAnswerListByQidDesc(int qid, int offset, int limit){
+        return answerDAO.getAnswerListByQidDesc(qid, offset, limit);
     }
 }

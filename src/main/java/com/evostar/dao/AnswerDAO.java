@@ -15,7 +15,6 @@ import java.util.List;
 public interface AnswerDAO {
     String TABLE_NAME = " answer";
     String INSERT_FIELDS = " user_id, question_id, content,created_date ";
-    String SELECT_FIELDS = " * ";
     public Answer getLastAnswerByQuestionId(int questionId);
 
     //增加回答
@@ -23,9 +22,6 @@ public interface AnswerDAO {
             ") values (#{userId},#{questionId},#{content},#{createdDate})"})
     public int addAnswer(Answer answer);
 
-    @Select({"select ",SELECT_FIELDS," from ",TABLE_NAME," where question_id = #{qid} " +
-            "order by id desc limit #{offset},#{limit}",})
-    public List<Answer> getAnswerListByQid(
-            @Param(value = "qid") int qid, @Param(value = "offset") int offset,
+    public List<Answer> getAnswerListByQidDesc(@Param(value = "id") int qid, @Param(value = "offset") int offset,
             @Param("limit") int limit);
 }

@@ -32,7 +32,7 @@ public class HomeController {
     @Autowired
     private AnswerService answerService;
 
-    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
     @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", defaultValue = "1")
     public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page) {
         int limit = 10;
@@ -43,13 +43,12 @@ public class HomeController {
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         return questionList.stream().map(question -> {
-            System.out.println("question:"+question.getId());
             Answer answer = answerService.getLastAnswerByQuestionId(question.getId());
             IndexVO indexVO = new IndexVO();
             indexVO.setId(question.getId());
             indexVO.setTitle(question.getTitle());
             if(answer != null){
-                indexVO.setAnswer(answer.getUser());
+                indexVO.setAnswer(answer.getAnswer());
                 String answerContent = answer.getContent();
                 answerContent = answerContent.length() > 30 ? answerContent.substring(0,30)+"......" : answerContent;
                 indexVO.setSummary(answerContent);
