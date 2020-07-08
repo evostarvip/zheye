@@ -4,6 +4,7 @@ import com.evostar.exception.MyException;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.User;
 import com.evostar.service.UserService;
+import com.evostar.vo.LoginVO;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class LoginController {
             @ApiImplicitParam(name="password", value = "密码",dataType = "String", defaultValue = "123456", required = true),
             @ApiImplicitParam(name="rememberme", value = "开启7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
     })
-    public Map<String, String> login(@RequestBody Map<String, String> map, HttpServletResponse response) {
+    public LoginVO login(@RequestBody Map<String, String> map, HttpServletResponse response) {
         String username = map.get("username");
         String password = map.get("password");
         Boolean rememberme = Boolean.valueOf(map.get("rememberme"));
@@ -64,10 +65,18 @@ public class LoginController {
         cookie.setPath("/");
         cookie.setMaxAge(24 * 60 * 60 * 7);//两个小时
         response.addCookie(cookie);
-        result.put("msg", "SUCCESS");
-        result.put("redirect", "http:baidu.com");
-        result.put("headUrl",user.getHeadUrl());
-        return result;
+        LoginVO loginVO = new LoginVO();
+        loginVO.setMsg("SUCCESS");
+        loginVO.setRedirect("http://baidu.com");
+        loginVO.setUser(user);
+//        result.put("msg", "SUCCESS");
+//        result.put("redirect", "http:baidu.com");
+//        result.put("data", user.toString());
+//        result.put("headUrl", user.getHeadUrl());
+//        result.put("userId", String.valueOf(user.getId()));
+//        result.put("name", user.getName());
+
+        return loginVO;
     }
 
     @RequestMapping(value = "/layout", method = RequestMethod.GET)

@@ -7,11 +7,13 @@
     <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 </head>
 <body>
-<span>收拾收拾</span>
+<span>获取我的cookie</span><br/><br/>
+<span>我的token是：</span><span style="color: #ff4466;font-weight: bold;" id="token"></span>
 </body>
 <script>
     $(function () {
-        console.log($.cookie("token"));
+        let token = $.cookie("token");
+        $("#token").html(token);
     });
 </script>
 </html>
