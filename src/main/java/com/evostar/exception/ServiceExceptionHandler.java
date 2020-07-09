@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice    //"控制器增强"注解
-public class ExceptionHander {
+public class ServiceExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
