@@ -13,11 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,6 +46,7 @@ public class HomeController {
                 String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
                 answerContent = answerContent.length() > 30 ? answerContent.substring(0,30)+"......" : answerContent;
                 indexVO.setSummary(answerContent);
+                indexVO.setDetail(answer.getContent());
             }
             ActionsVO actionsVO = new ActionsVO();
             //暂留，后面开发点赞、评论时填充值
