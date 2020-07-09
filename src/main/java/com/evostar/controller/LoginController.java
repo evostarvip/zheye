@@ -69,13 +69,6 @@ public class LoginController {
         loginVO.setMsg("SUCCESS");
         loginVO.setRedirect("http://baidu.com");
         loginVO.setUser(user);
-//        result.put("msg", "SUCCESS");
-//        result.put("redirect", "http:baidu.com");
-//        result.put("data", user.toString());
-//        result.put("headUrl", user.getHeadUrl());
-//        result.put("userId", String.valueOf(user.getId()));
-//        result.put("name", user.getName());
-
         return loginVO;
     }
 
