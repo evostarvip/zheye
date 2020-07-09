@@ -5,7 +5,10 @@ import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.User;
 import com.evostar.service.UserService;
 import com.evostar.vo.LoginVO;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +39,13 @@ public class LoginController {
     public Map<String, String> reg(@RequestBody Map<String, String> map) throws Exception {
         String username = map.get("username");
         String password = map.get("password");
-        System.out.println("username:"+username+",password:"+password);
-        if(userService.register(username, password) > 0){
+        System.out.println("username:" + username + ",password:" + password);
+        if (userService.register(username, password) > 0) {
             Map<String, String> result = new HashMap<>();
             result.put("msg", "SUCCESS");
             return result;
-        }else{
-            throw new ServiceException(MsgCodeEnum.REGISTERED_FAILED.getCode(), MsgCodeEnum.REGISTERED_FAILED.getMsg());
+        } else {
+            throw new ServiceException(MsgCodeEnum.REGISTERED_FAILED);
         }
     }
 
@@ -50,8 +53,8 @@ public class LoginController {
     @ApiOperation("登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "登录账号，手机号或邮箱", dataType = "String", defaultValue = "123@evostar.vip", required = true),
-            @ApiImplicitParam(name="password", value = "密码",dataType = "String", defaultValue = "123456", required = true),
-            @ApiImplicitParam(name="rememberme", value = "开启7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
+            @ApiImplicitParam(name = "password", value = "密码", dataType = "String", defaultValue = "123456", required = true),
+            @ApiImplicitParam(name = "rememberme", value = "开启7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
     })
     public LoginVO login(@RequestBody Map<String, String> map, HttpServletResponse response) {
         String username = map.get("username");
@@ -59,7 +62,7 @@ public class LoginController {
         Boolean rememberme = Boolean.valueOf(map.get("rememberme"));
         User user = userService.login(username, password, rememberme);
         Map<String, String> result = new HashMap<>();
-        Cookie cookie = new Cookie("token",user.getToken());
+        Cookie cookie = new Cookie("token", user.getToken());
         cookie.setPath("/");
         cookie.setMaxAge(24 * 60 * 60 * 7);//两个小时
         response.addCookie(cookie);
@@ -73,8 +76,8 @@ public class LoginController {
     @RequestMapping(value = "/layout", method = RequestMethod.GET)
     @ApiOperation(value = "退出登录")
     @ResponseBody
-    public Map<String, String> layout(HttpServletResponse response){
-        Cookie cookie = new Cookie("token","");
+    public Map<String, String> layout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", "");
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);

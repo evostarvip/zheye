@@ -1,6 +1,8 @@
 package com.evostar.model;
 
-public enum MsgCodeEnum {
+public enum MsgCodeEnum implements ErrorCode {
+    UNAUTHORIZED_ERROR(100, "未登录或登录已失效"),
+
     PASSWORD_ERROR(300, "密码错误"),
     ACCOUNT_ERROR(301, "账号不存在"),
     ACCOUNT_EMPTY(302, "账号不能为空"),
@@ -9,30 +11,24 @@ public enum MsgCodeEnum {
     REGISTERED_FAILED(305, "注册失败"),
     DATA_NONE(306, "数据不存在"),
     OPERATION_FAILED(307, "操作失败"),
-    PARAM_EMPTY(308, "参数不能为空")
-    ;
+    PARAM_EMPTY(308, "参数不能为空");
 
     private int code;
-    private String msg;
+    private String message;
 
-    private MsgCodeEnum(int code, String msg){
+    MsgCodeEnum(int code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
+    @Override
     public int getCode() {
         return code;
     }
 
-    public String getMsg() {
-        return msg;
+    @Override
+    public String getMessage() {
+        return message;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 }

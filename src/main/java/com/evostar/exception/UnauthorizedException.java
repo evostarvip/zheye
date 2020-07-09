@@ -1,9 +1,9 @@
 package com.evostar.exception;
 
-import lombok.Data;
+import com.evostar.model.MsgCodeEnum;
 
-public class UnauthorizedException extends RuntimeException{
+public class UnauthorizedException extends ServiceException {
     public UnauthorizedException() {
-        super();
+        super(MsgCodeEnum.UNAUTHORIZED_ERROR);
     }
 }

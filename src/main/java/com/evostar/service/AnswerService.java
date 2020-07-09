@@ -20,33 +20,35 @@ public class AnswerService {
     @Autowired
     private QuestionDAO questionDAO;
 
-    public Answer getLastAnswerByQuestionId(int questionId){
+    public Answer getLastAnswerByQuestionId(int questionId) {
         return answerDAO.getLastAnswerByQuestionId(questionId);
     }
 
-    public int addAnswer(Answer answer){
+    public int addAnswer(Answer answer) {
         return answerDAO.addAnswer(answer);
     }
-    public void checkQid(int questionId){
-        if(questionId == 0){
-            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid"+MsgCodeEnum.PARAM_EMPTY.getMsg());
+
+    public void checkQid(int questionId) {
+        if (questionId == 0) {
+            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid" + MsgCodeEnum.PARAM_EMPTY.getMessage());
         }
         //查询问题是否存在
         Question question = questionDAO.getById(questionId);
-        if(question == null){
-            throw new ServiceException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
+        if (question == null) {
+            throw new ServiceException(MsgCodeEnum.DATA_NONE);
         }
     }
-    public List<Answer> getAnswerListByQidDesc(int qid, int offset, int limit){
+
+    public List<Answer> getAnswerListByQidDesc(int qid, int offset, int limit) {
         return answerDAO.getAnswerListByQidDesc(qid, offset, limit);
     }
 
-    public Answer getAnswerById(int aid){
+    public Answer getAnswerById(int aid) {
         return answerDAO.getAnswerById(aid);
     }
 
 
-    public AnswerVO getAnswerVO(Answer answer){
+    public AnswerVO getAnswerVO(Answer answer) {
         AnswerVO answerVO = new AnswerVO();
         answerVO.setId(answer.getId());
         answerVO.setAnswer(answer.getAnswer());
@@ -64,7 +66,7 @@ public class AnswerService {
         return answerVO;
     }
 
-    public int getAnswerCountByQid(int qid){
+    public int getAnswerCountByQid(int qid) {
         return answerDAO.getCountByQid(qid);
     }
 }

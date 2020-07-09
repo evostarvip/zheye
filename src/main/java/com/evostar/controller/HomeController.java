@@ -12,7 +12,11 @@ import com.evostar.vo.IndexVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,18 +37,19 @@ public class HomeController {
         int offset = (page - 1) * limit;
         List<Question> questionList = questionService.getLatestQuestions(0, offset, limit);
         //如果questionList没有数据，停止执行直接返回空数据
-        if(questionList == null){
-            throw new ServiceException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
+        if (questionList == null) {
+            throw new ServiceException(MsgCodeEnum.DATA_NONE);
         }
         return questionList.stream().map(question -> {
             Answer answer = answerService.getLastAnswerByQuestionId(question.getId());
             IndexVO indexVO = new IndexVO();
             indexVO.setId(question.getId());
             indexVO.setTitle(question.getTitle());
-            if(answer != null){
+            if (answer != null) {
                 indexVO.setAnswer(answer.getAnswer());
-                String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
-                answerContent = answerContent.length() > 30 ? answerContent.substring(0,30)+"......" : answerContent;
+                String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");
+                ;
+                answerContent = answerContent.length() > 30 ? answerContent.substring(0, 30) + "......" : answerContent;
                 indexVO.setSummary(answerContent);
                 indexVO.setDetail(answerService.getAnswerVO(answer));
             }

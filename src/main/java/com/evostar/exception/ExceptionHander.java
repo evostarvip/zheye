@@ -36,7 +36,8 @@ public class ExceptionHander {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Map<String, Object> UnauthorizedHandler(UnauthorizedException e) {
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("msg", "未登录或登录已失效");
+        result.put("code", e.getCode());
+        result.put("msg", e.getMsg());
         return result;
     }
 

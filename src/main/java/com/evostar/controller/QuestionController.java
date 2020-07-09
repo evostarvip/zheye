@@ -47,7 +47,7 @@ public class QuestionController {
             @ApiImplicitParam(name = "content", value = "问题的描述", required = false)
 
     })
-    public Map<String, String> addQuestion(@RequestBody Map<String, String> map){
+    public Map<String, String> addQuestion(@RequestBody Map<String, String> map) {
         try {
             String title = map.get("title");
             String content = map.get("content");
@@ -57,15 +57,15 @@ public class QuestionController {
             question.setTitle(title);
             question.setUserId(hostHolder.getUser().getId());
             Map<String, String> result = new HashMap<>();
-            if(questionService.addQuestion(question) > 0){
+            if (questionService.addQuestion(question) > 0) {
                 result.put("msg", "SUCCESS");
                 return result;
-            }else{
-                throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
+            } else {
+                throw new ServiceException(MsgCodeEnum.OPERATION_FAILED);
             }
         } catch (Exception e) {
             logger.error("增加题目失败" + e.getMessage());
-            throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
+            throw new ServiceException(MsgCodeEnum.OPERATION_FAILED);
         }
     }
 
@@ -74,9 +74,9 @@ public class QuestionController {
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
     @RequestMapping(value = "/question/detail", method = {RequestMethod.GET})
     public QuestionDetailVO questionDetail(@RequestParam(required = true) int qid) {
-        Question question =  questionService.getById(qid);
-        if (question == null){
-            throw new ServiceException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
+        Question question = questionService.getById(qid);
+        if (question == null) {
+            throw new ServiceException(MsgCodeEnum.DATA_NONE);
         }
         List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, 0, 20);
         List<AnswerVO> answerVOList = answerList.stream().map(answer -> {
@@ -89,7 +89,7 @@ public class QuestionController {
         detailVO.setDetail(question.getContent());
         detailVO.setLookNum(question.getLookNum());
         detailVO.setAnswerNum(answerService.getAnswerCountByQid(qid));
-        String summary = question.getContent() != null && question.getContent().length() > 30 ? question.getContent().substring(0, 30)+"......" : question.getContent();
+        String summary = question.getContent() != null && question.getContent().length() > 30 ? question.getContent().substring(0, 30) + "......" : question.getContent();
         detailVO.setSummary(summary);
         detailVO.setAnswerList(answerVOList);
         return detailVO;
@@ -101,14 +101,14 @@ public class QuestionController {
             @ApiImplicitParam(name = "qid", value = "问题id", dataType = "int", defaultValue = "1", required = true)
     })
     @RequestMapping(value = "/answer/add", method = {RequestMethod.POST})
-    public Map<String, String> addAnswer(@RequestBody Map<String, String> map){
+    public Map<String, String> addAnswer(@RequestBody Map<String, String> map) {
         String content = map.get("content");
         String qid = map.get("qid");
-        if(qid == null){
-            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid"+MsgCodeEnum.PARAM_EMPTY.getMsg());
+        if (qid == null) {
+            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid" + MsgCodeEnum.PARAM_EMPTY.getMessage());
         }
-        if(StringUtils.isBlank(content)){
-            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "content"+MsgCodeEnum.PARAM_EMPTY.getMsg());
+        if (StringUtils.isBlank(content)) {
+            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "content" + MsgCodeEnum.PARAM_EMPTY.getMessage());
         }
         int questionId = Integer.parseInt(qid);
         answerService.checkQid(questionId);
@@ -119,11 +119,11 @@ public class QuestionController {
         answer.setCreatedDate(new Date());
         int res = answerService.addAnswer(answer);
         Map<String, String> result = new HashMap<>();
-        if(res > 0){
+        if (res > 0) {
             result.put("msg", "SUCCESS");
             return result;
-        }else{
-            throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
+        } else {
+            throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMessage());
         }
     }
 
@@ -133,7 +133,7 @@ public class QuestionController {
             @ApiImplicitParam(name = "page", value = "分页，不填默认1", dataType = "int", defaultValue = "1")
     })
     @RequestMapping(value = "answerList", method = {RequestMethod.GET})
-    public List<AnswerVO> answerList(int qid, @RequestParam(required = false,defaultValue = "1") int page){
+    public List<AnswerVO> answerList(int qid, @RequestParam(required = false, defaultValue = "1") int page) {
         int limit = 20;
         int offset = (page - 1) * limit;
         List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, offset, limit);
@@ -145,7 +145,7 @@ public class QuestionController {
     @ApiOperation(value = "获取回答的详情")
     @ApiImplicitParam(name = "aid", value = "answer的id", defaultValue = "1", dataType = "int")
     @RequestMapping(value = "/answer/detail", method = RequestMethod.GET)
-    public AnswerVO getAnswerDetail(int aid){
+    public AnswerVO getAnswerDetail(int aid) {
         Answer answer = answerService.getAnswerById(aid);
         return answerService.getAnswerVO(answer);
     }
