@@ -13,6 +13,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // TODO json 接口放到 /api/ 下，拦截 /api/** 就好了
+        // exclude 在Interceptor中的target，判断是否有 Annotation，最好实现 Role-Base 或者继承 shiro.
         registry.addInterceptor(tokenInterceptor).addPathPatterns("/**").
                 excludePathPatterns("/index").
                 excludePathPatterns("/reg").
