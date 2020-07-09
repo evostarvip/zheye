@@ -1,6 +1,6 @@
 package com.evostar.controller;
 
-import com.evostar.exception.MyException;
+import com.evostar.exception.ServiceException;
 import com.evostar.model.Answer;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
@@ -34,7 +34,7 @@ public class HomeController {
         List<Question> questionList = questionService.getLatestQuestions(0, offset, limit);
         //如果questionList没有数据，停止执行直接返回空数据
         if(questionList == null){
-            throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
+            throw new ServiceException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         return questionList.stream().map(question -> {
             Answer answer = answerService.getLastAnswerByQuestionId(question.getId());

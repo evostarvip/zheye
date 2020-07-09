@@ -1,13 +1,12 @@
 package com.evostar.controller;
 
-import com.evostar.exception.MyException;
+import com.evostar.exception.ServiceException;
 import com.evostar.model.Answer;
 import com.evostar.model.HostHolder;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
-import com.evostar.vo.ActionsVO;
 import com.evostar.vo.AnswerVO;
 import com.evostar.vo.QuestionDetailVO;
 import io.swagger.annotations.Api;
@@ -62,11 +61,11 @@ public class QuestionController {
                 result.put("msg", "SUCCESS");
                 return result;
             }else{
-                throw new MyException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
+                throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
             }
         } catch (Exception e) {
             logger.error("增加题目失败" + e.getMessage());
-            throw new MyException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
+            throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
         }
     }
 
@@ -77,7 +76,7 @@ public class QuestionController {
     public QuestionDetailVO questionDetail(@RequestParam(required = true) int qid) {
         Question question =  questionService.getById(qid);
         if (question == null){
-            throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
+            throw new ServiceException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, 0, 20);
         List<AnswerVO> answerVOList = answerList.stream().map(answer -> {
@@ -106,10 +105,10 @@ public class QuestionController {
         String content = map.get("content");
         String qid = map.get("qid");
         if(qid == null){
-            throw new MyException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid"+MsgCodeEnum.PARAM_EMPTY.getMsg());
+            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "qid"+MsgCodeEnum.PARAM_EMPTY.getMsg());
         }
         if(StringUtils.isBlank(content)){
-            throw new MyException(MsgCodeEnum.PARAM_EMPTY.getCode(), "content"+MsgCodeEnum.PARAM_EMPTY.getMsg());
+            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY.getCode(), "content"+MsgCodeEnum.PARAM_EMPTY.getMsg());
         }
         int questionId = Integer.parseInt(qid);
         answerService.checkQid(questionId);
@@ -124,7 +123,7 @@ public class QuestionController {
             result.put("msg", "SUCCESS");
             return result;
         }else{
-            throw new MyException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
+            throw new ServiceException(MsgCodeEnum.OPERATION_FAILED.getCode(), MsgCodeEnum.OPERATION_FAILED.getMsg());
         }
     }
 

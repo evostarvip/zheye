@@ -3,7 +3,7 @@ package com.evostar.service;
 import java.util.*;
 
 import com.evostar.dao.UserDAO;
-import com.evostar.exception.MyException;
+import com.evostar.exception.ServiceException;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.User;
 import com.evostar.utils.JwtUtils;
@@ -20,17 +20,17 @@ public class UserService {
     public int register(String username, String password) {
         Map<String, String> map = new HashMap<String, String>();
         if (StringUtils.isBlank(username)) {
-            throw new MyException(MsgCodeEnum.ACCOUNT_EMPTY.getCode(), MsgCodeEnum.ACCOUNT_EMPTY.getMsg());
+            throw new ServiceException(MsgCodeEnum.ACCOUNT_EMPTY.getCode(), MsgCodeEnum.ACCOUNT_EMPTY.getMsg());
         }
 
         if (StringUtils.isBlank(password)) {
-            throw new MyException(MsgCodeEnum.PASSWORD_EMPTY.getCode(), MsgCodeEnum.PASSWORD_EMPTY.getMsg());
+            throw new ServiceException(MsgCodeEnum.PASSWORD_EMPTY.getCode(), MsgCodeEnum.PASSWORD_EMPTY.getMsg());
         }
         //判断是否已经注册过
         User user = userDAO.selectByName(username);
 
         if (user != null) {
-            throw new MyException(MsgCodeEnum.ACCOUNT_REGISTERED.getCode(), MsgCodeEnum.ACCOUNT_REGISTERED.getMsg());
+            throw new ServiceException(MsgCodeEnum.ACCOUNT_REGISTERED.getCode(), MsgCodeEnum.ACCOUNT_REGISTERED.getMsg());
         }
         // 密码强度
         user = new User();
@@ -45,21 +45,21 @@ public class UserService {
     public User login(String username, String password,boolean rememberme) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (StringUtils.isBlank(username)) {
-            throw new MyException(MsgCodeEnum.ACCOUNT_EMPTY.getCode(), MsgCodeEnum.ACCOUNT_EMPTY.getMsg());
+            throw new ServiceException(MsgCodeEnum.ACCOUNT_EMPTY.getCode(), MsgCodeEnum.ACCOUNT_EMPTY.getMsg());
         }
 
         if (StringUtils.isBlank(password)) {
-            throw new MyException(MsgCodeEnum.PASSWORD_EMPTY.getCode(), MsgCodeEnum.PASSWORD_EMPTY.getMsg());
+            throw new ServiceException(MsgCodeEnum.PASSWORD_EMPTY.getCode(), MsgCodeEnum.PASSWORD_EMPTY.getMsg());
         }
 
         User user = userDAO.selectByName(username);
 
         if (user == null) {
-            throw new MyException(MsgCodeEnum.ACCOUNT_ERROR.getCode(), MsgCodeEnum.ACCOUNT_ERROR.getMsg());
+            throw new ServiceException(MsgCodeEnum.ACCOUNT_ERROR.getCode(), MsgCodeEnum.ACCOUNT_ERROR.getMsg());
         }
 
         if (!DigestUtils.md5Hex(password+user.getSalt()).equals(user.getPassword())) {
-            throw new MyException(MsgCodeEnum.PASSWORD_ERROR.getCode(), MsgCodeEnum.PASSWORD_ERROR.getMsg());
+            throw new ServiceException(MsgCodeEnum.PASSWORD_ERROR.getCode(), MsgCodeEnum.PASSWORD_ERROR.getMsg());
         }
         //是否7天免登录
         int expire = rememberme ? 7 * 24 * 60 : 120;

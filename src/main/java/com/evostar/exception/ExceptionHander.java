@@ -21,10 +21,10 @@ public class ExceptionHander {
         return result;
     }
 
-    @ExceptionHandler(MyException.class)
+    @ExceptionHandler(ServiceException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> errorHandler(MyException e) {
+    public Map<String, Object> errorHandler(ServiceException e) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", e.getCode());
         result.put("msg", e.getMsg());

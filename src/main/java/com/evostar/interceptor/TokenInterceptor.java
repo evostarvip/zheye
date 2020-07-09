@@ -2,7 +2,6 @@ package com.evostar.interceptor;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.evostar.dao.UserDAO;
-import com.evostar.exception.MyException;
 import com.evostar.exception.UnauthorizedException;
 import com.evostar.model.HostHolder;
 import com.evostar.model.User;
