@@ -68,6 +68,8 @@ public class LoginController {
         response.addCookie(cookie);
         LoginVO loginVO = new LoginVO();
         loginVO.setMsg("SUCCESS");
+        // TODO 这里不能是 www.baidu.com
+        // 猜测是 loginVO.setRedirect("/");
         loginVO.setRedirect("http://baidu.com");
         loginVO.setUser(user);
         return loginVO;
