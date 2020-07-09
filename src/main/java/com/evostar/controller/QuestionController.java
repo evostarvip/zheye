@@ -8,6 +8,7 @@ import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
 import com.evostar.vo.ActionsVO;
+import com.evostar.vo.AnswerVO;
 import com.evostar.vo.QuestionDetailVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -79,27 +80,19 @@ public class QuestionController {
             throw new MyException(MsgCodeEnum.DATA_NONE.getCode(), MsgCodeEnum.DATA_NONE.getMsg());
         }
         List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, 0, 20);
-        answerList.stream().map(answer -> {
-            ActionsVO actionsVO = new ActionsVO();
-            //暂留，后面开发点赞、评论时填充值
-            actionsVO.setCollect(false);
-            actionsVO.setAgreeNum(0);
-            actionsVO.setDisagree(false);
-            actionsVO.setIsAgree(false);
-            actionsVO.setLike(false);
-            actionsVO.setReviewNum(0);
-            answer.setActions(actionsVO);
-            return answer;
+        List<AnswerVO> answerVOList = answerList.stream().map(answer -> {
+            return answerService.getAnswerVO(answer);
         }).collect(Collectors.toList());
 
         QuestionDetailVO detailVO = new QuestionDetailVO();
         detailVO.setId(question.getId());
         detailVO.setTitle(question.getTitle());
         detailVO.setDetail(question.getContent());
-        detailVO.setReviewNum(question.getReviewNum());
+        detailVO.setLookNum(question.getLookNum());
+        detailVO.setAnswerNum(answerService.getAnswerCountByQid(qid));
         String summary = question.getContent() != null && question.getContent().length() > 30 ? question.getContent().substring(0, 30)+"......" : question.getContent();
         detailVO.setSummary(summary);
-        detailVO.setAnswerList(answerList);
+        detailVO.setAnswerList(answerVOList);
         return detailVO;
     }
 
@@ -141,39 +134,20 @@ public class QuestionController {
             @ApiImplicitParam(name = "page", value = "分页，不填默认1", dataType = "int", defaultValue = "1")
     })
     @RequestMapping(value = "answerList", method = {RequestMethod.GET})
-    public List<Answer> answerList(int qid, @RequestParam(required = false,defaultValue = "1") int page){
+    public List<AnswerVO> answerList(int qid, @RequestParam(required = false,defaultValue = "1") int page){
         int limit = 20;
         int offset = (page - 1) * limit;
         List<Answer> answerList = answerService.getAnswerListByQidDesc(qid, offset, limit);
         return answerList.stream().map(answer -> {
-            ActionsVO actionsVO = new ActionsVO();
-            //暂留，后面开发点赞、评论时填充值
-            actionsVO.setCollect(false);
-            actionsVO.setAgreeNum(0);
-            actionsVO.setDisagree(false);
-            actionsVO.setIsAgree(false);
-            actionsVO.setLike(false);
-            actionsVO.setReviewNum(0);
-            answer.setActions(actionsVO);
-            return answer;
+            return answerService.getAnswerVO(answer);
         }).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "获取回答的详情")
     @ApiImplicitParam(name = "aid", value = "answer的id", defaultValue = "1", dataType = "int")
     @RequestMapping(value = "/answer/detail", method = RequestMethod.GET)
-    public Answer getAnswerDetail(int aid){
+    public AnswerVO getAnswerDetail(int aid){
         Answer answer = answerService.getAnswerById(aid);
-        ActionsVO actionsVO = new ActionsVO();
-        //暂留，后面开发点赞、评论时填充值
-        actionsVO.setCollect(false);
-        actionsVO.setAgreeNum(0);
-        actionsVO.setDisagree(false);
-        actionsVO.setIsAgree(false);
-        actionsVO.setLike(false);
-        actionsVO.setReviewNum(0);
-        answer.setActions(actionsVO);
-        answer.setActions(actionsVO);
-        return answer;
+        return answerService.getAnswerVO(answer);
     }
 }

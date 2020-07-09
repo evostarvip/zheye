@@ -26,4 +26,7 @@ public interface AnswerDAO {
             @Param("limit") int limit);
 
     public Answer getAnswerById(int aid);
+
+    @Select({"select count(*) from ",TABLE_NAME," where question_id = #{qid}"})
+    public int getCountByQid(@Param(value = "qid") int qid);
 }

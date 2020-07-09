@@ -1,5 +1,6 @@
 package com.evostar.vo;
 
+import com.evostar.model.Answer;
 import com.evostar.model.Question;
 import com.evostar.model.User;
 import io.swagger.annotations.Api;
@@ -23,7 +24,7 @@ public class IndexVO {
     private String summary;
 
     @ApiModelProperty(value = "回答的内容的完整信息")
-    private String detail;
+    private AnswerVO detail;
 
 
     private ActionsVO actions;

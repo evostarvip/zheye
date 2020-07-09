@@ -46,7 +46,7 @@ public class HomeController {
                 String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
                 answerContent = answerContent.length() > 30 ? answerContent.substring(0,30)+"......" : answerContent;
                 indexVO.setSummary(answerContent);
-                indexVO.setDetail(answer.getContent());
+                indexVO.setDetail(answerService.getAnswerVO(answer));
             }
             ActionsVO actionsVO = new ActionsVO();
             //暂留，后面开发点赞、评论时填充值

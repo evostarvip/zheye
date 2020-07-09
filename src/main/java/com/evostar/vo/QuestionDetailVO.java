@@ -17,7 +17,9 @@ public class QuestionDetailVO {
     @ApiModelProperty(value = "问题的完整描述")
     private String detail;
     @ApiModelProperty(value = "浏览量")
-    private int reviewNum;
+    private int lookNum;
     @ApiModelProperty(value = "回答的数据")
-    private List<Answer> answerList;
+    private List<AnswerVO> answerList;
+    @ApiModelProperty(value = "回答的数量")
+    private int answerNum;
 }

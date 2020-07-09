@@ -30,5 +30,5 @@ public class Question {
     @ApiModelProperty(value = "踩的数量")
     private int unSupportCount;
     @ApiModelProperty(value = "浏览量")
-    private int reviewNum;
+    private int lookNum;
 }

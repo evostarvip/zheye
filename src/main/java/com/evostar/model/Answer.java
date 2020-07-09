@@ -18,7 +18,7 @@ public class Answer {
     private int questionId;
     @ApiModelProperty(value = "回答的时间")
     private Date createdDate;
-    @ApiModelProperty(value = "浏览量")
+    @ApiModelProperty(value = "回复数量")
     private int reviewNum;
     @ApiModelProperty(value = "回答的内容")
     private String content;
@@ -28,6 +28,4 @@ public class Answer {
     private int unsupportCount;
     @ApiModelProperty(value = "回答者本人的信息")
     private User answer;
-
-    private ActionsVO actions;
 }
