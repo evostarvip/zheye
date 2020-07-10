@@ -18,7 +18,7 @@ class LoginControllerTest extends ApplicationTests {
         HashMap<String, String> map = new HashMap<>();
         map.put("username","zhangSan77");
         map.put("password","123456");
-        ResponseEntity<String> entity = restTemplate.postForEntity("/reg", map, String.class);
+        ResponseEntity<String> entity = restTemplate.postForEntity("/api/reg", map, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(),HttpStatus.OK);
@@ -30,7 +30,7 @@ class LoginControllerTest extends ApplicationTests {
         HashMap<String, String> map = new HashMap<>();
         map.put("username","zhangSan");
         map.put("password","123456");
-        ResponseEntity<String> entity = restTemplate.postForEntity("/login", map, String.class);
+        ResponseEntity<String> entity = restTemplate.postForEntity("/api/login", map, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
@@ -38,7 +38,7 @@ class LoginControllerTest extends ApplicationTests {
 
     @Test
     public void testLayout(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/layout", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/layout", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);

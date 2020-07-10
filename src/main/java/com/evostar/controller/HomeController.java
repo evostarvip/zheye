@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "首页")
-public class HomeController {
+public class HomeController extends ApiController {
     @Autowired
     private QuestionService questionService;
     @Autowired

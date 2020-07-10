@@ -19,7 +19,7 @@ class QuestionControllerTest extends ApplicationTests {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie",token);
         HttpEntity<HashMap<String, String>> request = new HttpEntity<>(map,headers);
-        ResponseEntity<String> entity = restTemplate.exchange("/question/add", HttpMethod.POST, request, String.class);
+        ResponseEntity<String> entity = restTemplate.exchange("/api/question/add", HttpMethod.POST, request, String.class);
         System.out.println(entity.getBody());
         System.out.println(entity.getStatusCode());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
@@ -35,7 +35,7 @@ class QuestionControllerTest extends ApplicationTests {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie",token);
         HttpEntity<HashMap<String, String>> request = new HttpEntity<>(map,headers);
-        ResponseEntity<String> entity = restTemplate.exchange("/answer/add", HttpMethod.POST, request, String.class);
+        ResponseEntity<String> entity = restTemplate.exchange("/api/answer/add", HttpMethod.POST, request, String.class);
         System.out.println(entity.getBody());
         System.out.println(entity.getStatusCode());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);

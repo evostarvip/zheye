@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @Api(tags = "问题question")
-public class QuestionController {
+public class QuestionController extends ApiController{
     @Autowired
     private HostHolder hostHolder;
     @Autowired

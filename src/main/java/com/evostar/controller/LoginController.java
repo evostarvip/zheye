@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @Api(tags = "用户注册/登录")
-public class LoginController {
+public class LoginController extends ApiController{
     @Autowired
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -68,9 +68,7 @@ public class LoginController {
         response.addCookie(cookie);
         LoginVO loginVO = new LoginVO();
         loginVO.setMsg("SUCCESS");
-        // TODO 这里不能是 www.baidu.com
-        // 猜测是 loginVO.setRedirect("/");
-        loginVO.setRedirect("http://baidu.com");
+        loginVO.setRedirect("/");
         loginVO.setUser(user);
         return loginVO;
     }

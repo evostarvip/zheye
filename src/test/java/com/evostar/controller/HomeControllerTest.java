@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 class HomeControllerTest extends ApplicationTests {
     @Test
     public void testIndex(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/index", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/index", String.class);
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
 }
