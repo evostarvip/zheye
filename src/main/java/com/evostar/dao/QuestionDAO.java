@@ -1,29 +1,26 @@
 package com.evostar.dao;
 
 import com.evostar.model.Question;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper
 @Repository
+@Mapper
 public interface QuestionDAO {
-    String TABLE_NAME = " question";
-    String INSERT_FIELDS = " title, content, created_date, user_id, comment_count ";
-    String SELECT_FIELDS = " * ";
+    @Insert({"insert into question (title, content, created_date, user_id, comment_count) " +
+            "values(#{title},#{content},#{createdDate},#{userId},#{commentCount})"})
+    public int addQuestion(Question question);
 
-    @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
-            ") values (#{title},#{content},#{createdDate},#{userId},#{commentCount})"})
-    int addQuestion(Question question);
+    @Select({"select * from question where id=#{id}"})
+    public Question getById(int questionId);
+
 
     List<Question> selectLatestQuestions(@Param("userId") int qIdList, @Param("offset") int offset,
                                          @Param("limit") int limit);
-
-    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
-    Question getById(int id);
-
-    @Update({"update ", TABLE_NAME, " set comment_count = #{commentCount} where id=#{id}"})
-    int updateCommentCount(@Param("id") int id, @Param("commentCount") int commentCount);
 
 }

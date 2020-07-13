@@ -1,24 +1,20 @@
-##连接池
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/zheye?characterEncoding=utf-8
-    #url: jdbc:h2:mem:zheye;MODE=MYSQL;DATABASE_TO_UPPER=false;
     username: root
     password: evostar2020
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-  cache:
-    ehcache:
-      config: ehcache.xml
 
 
-#别名扫描目录
-#加载映射文件
 mybatis:
   type-aliases-package: com.evostar.model
   mapper-locations: mappers/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
+
 server:
   port: 8888
+  servlet:
+    context-path: /api

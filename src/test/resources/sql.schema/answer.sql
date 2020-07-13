@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS answer;
+DROP TABLE IF EXISTS `answer`;
 CREATE TABLE `answer` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,

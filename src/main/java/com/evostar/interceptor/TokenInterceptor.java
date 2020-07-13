@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.evostar.dao.UserDAO;
 import com.evostar.exception.UnauthorizedException;
 import com.evostar.model.HostHolder;
+import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.User;
 import com.evostar.utils.EhcacheUtils;
 import com.evostar.utils.JwtUtils;
@@ -46,7 +47,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if(token != null){
             User user = new User();
             Map<String, Claim> claim = JwtUtils.verifyJWTToken(token);
-            int userId = Integer.parseInt(claim.get("userId").asString());
+            int userId = claim.get("userId").asInt();
             if(ehcacheUtils.get(cacheName, TOKEN_PRE+userId) == null){
                 //缓存中无此人数据，去mysql查询
                 user = userDAO.selectById(userId);

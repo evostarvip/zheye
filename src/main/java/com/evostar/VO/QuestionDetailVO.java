@@ -1,6 +1,5 @@
-package com.evostar.vo;
+package com.evostar.VO;
 
-import com.evostar.model.Answer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

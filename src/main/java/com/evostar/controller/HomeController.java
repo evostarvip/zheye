@@ -1,15 +1,12 @@
 package com.evostar.controller;
 
-import com.evostar.exception.ServiceException;
+import com.evostar.VO.ActionsVO;
+import com.evostar.VO.AnswerVO;
+import com.evostar.VO.IndexVO;
 import com.evostar.model.Answer;
-import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
-import com.evostar.service.UserService;
-import com.evostar.vo.ActionsVO;
-import com.evostar.vo.IndexVO;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,47 +18,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "首页")
-public class HomeController extends ApiController {
+public class HomeController {
     @Autowired
     private QuestionService questionService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private AnswerService answerService;
 
     @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
     @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", defaultValue = "1")
-    public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page) {
+    public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page){
         int limit = 10;
         int offset = (page - 1) * limit;
         List<Question> questionList = questionService.getLatestQuestions(0, offset, limit);
-        //如果questionList没有数据，停止执行直接返回空数据
-        if (questionList == null) {
-            throw new ServiceException(MsgCodeEnum.DATA_NONE);
-        }
         return questionList.stream().map(question -> {
-            Answer answer = answerService.getLastAnswerByQuestionId(question.getId());
+            ActionsVO actionsVO = new ActionsVO();
+            actionsVO.setAgreeNum(0);
             IndexVO indexVO = new IndexVO();
             indexVO.setId(question.getId());
-            indexVO.setTitle(question.getTitle());
-            if (answer != null) {
-                indexVO.setAnswer(answer.getAnswer());
-                String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");
-                ;
-                answerContent = answerContent.length() > 30 ? answerContent.substring(0, 30) + "......" : answerContent;
-                indexVO.setSummary(answerContent);
-                indexVO.setDetail(answerService.getAnswerVO(answer));
-            }
-            ActionsVO actionsVO = new ActionsVO();
-            //暂留，后面开发点赞、评论时填充值
-            actionsVO.setCollect(false);
-            actionsVO.setAgreeNum(0);
-            actionsVO.setDisagree(false);
-            actionsVO.setIsAgree(false);
-            actionsVO.setLike(false);
-            actionsVO.setReviewNum(0);
             indexVO.setActions(actionsVO);
+            indexVO.setTitle(question.getTitle());
+
+            Answer answer = answerService.getLastAnswerByQuestionId(question.getId());
+            if(answer != null){
+                AnswerVO answerVO = answerService.getAnswerVO(answer);
+                indexVO.setDetail(answerVO);
+                indexVO.setAnswer(answer.getAnswer());
+                String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
+                answerContent = answerContent.length() > 50 ? answerContent.substring(0, 50) + "......" : answerContent;
+                indexVO.setSummary(answerContent);
+            }
             return indexVO;
         }).collect(Collectors.toList());
     }

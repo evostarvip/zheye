@@ -8,13 +8,14 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HomeControllerTest extends ApplicationTests {
+class AnswerControllerTest extends ApplicationTests {
+
     @Test
-    public void testIndex(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/index", String.class);
+    public void testAnswerList(){
+        int qid = 1;
+        ResponseEntity<String> entity = restTemplate.getForEntity("/answerList?qid="+qid, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
-
 }

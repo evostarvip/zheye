@@ -1,6 +1,5 @@
 package com.evostar.model;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 

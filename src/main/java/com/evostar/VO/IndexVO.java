@@ -1,7 +1,5 @@
-package com.evostar.vo;
+package com.evostar.VO;
 
-import com.evostar.model.Answer;
-import com.evostar.model.Question;
 import com.evostar.model.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;

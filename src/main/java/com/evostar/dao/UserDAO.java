@@ -1,35 +1,21 @@
 package com.evostar.dao;
 
 import com.evostar.model.User;
-import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.TabableView;
-import java.util.List;
-
-@Mapper
 @Repository
+@Mapper
 public interface UserDAO {
-    String TABLE_NAME = "user";
-    String INSET_FIELDS = " name, password, salt, head_url ";
-    String All_FIELDS = " * ";
-    String SELECT_FIELDS = " id, name, head_url ";
-    @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{name},#{password},#{salt},#{headUrl})"})
-    int addUser(User user);
+    @Select("select * from user where name = #{username}")
+    public User selectByName(String username);
 
-    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
-    User selectById(int id);
+    @Insert("insert into user (name,password,salt,head_url) values (#{name},#{password},#{salt},#{headUrl})")
+    public int addUser(User user);
 
-    List<User> selectByIds(@Param("userIdList") List<Integer> userIdList);
 
-    @Select({"select ", All_FIELDS, " from ", TABLE_NAME, " where name=#{name}"})
-    User selectByName(String name);
-
-    @Update({"update ", TABLE_NAME, " set password=#{password} where id=#{id}"})
-    void updatePassword(User user);
-
-    @Delete({"delete from ", TABLE_NAME, " where id=#{id}"})
-    void deleteById(int id);
+    @Select("select * from user where id = #{id}")
+    public User selectById(int id);
 }

@@ -1,87 +1,82 @@
 package com.evostar.controller;
 
+import com.evostar.VO.LoginVO;
 import com.evostar.exception.ServiceException;
+import com.evostar.model.ErrorCode;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.User;
 import com.evostar.service.UserService;
-import com.evostar.vo.LoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
+
 @RestController
-@Api(tags = "用户注册/登录")
-public class LoginController extends ApiController{
+@Api(tags = "登录")
+public class LoginController {
     @Autowired
     private UserService userService;
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
-    @RequestMapping(value = {"/reg"}, method = {RequestMethod.POST})
-    @ResponseBody
     @ApiOperation("注册")
+    @RequestMapping(value = "/reg", method = RequestMethod.POST)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "登录账号，手机号或邮箱", dataType = "String", defaultValue = "123@evostar.vip", required = true),
-            @ApiImplicitParam(name = "password", value = "密码", dataType = "String", defaultValue = "123456", required = true),
-            @ApiImplicitParam(name = "rememberme", value = "是否7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
+            @ApiImplicitParam(name = "username", value = "注册账号", required = true, defaultValue = "zhangsan", dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, defaultValue = "123456", dataType = "String")
     })
-    public Map<String, String> reg(@RequestBody Map<String, String> map) throws Exception {
+    public HashMap<String, String> reg(@RequestBody Map<String, String> map){
         String username = map.get("username");
         String password = map.get("password");
-        System.out.println("username:" + username + ",password:" + password);
-        if (userService.register(username, password) > 0) {
-            Map<String, String> result = new HashMap<>();
+        if (userService.reg(username, password) > 0){
+            HashMap<String, String> result =new HashMap<>();
             result.put("msg", "SUCCESS");
             return result;
-        } else {
+        }else {
             throw new ServiceException(MsgCodeEnum.REGISTERED_FAILED);
         }
     }
 
-    @RequestMapping(value = {"/login"}, method = {RequestMethod.POST})
     @ApiOperation("登录")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "登录账号，手机号或邮箱", dataType = "String", defaultValue = "123@evostar.vip", required = true),
-            @ApiImplicitParam(name = "password", value = "密码", dataType = "String", defaultValue = "123456", required = true),
-            @ApiImplicitParam(name = "rememberme", value = "开启7天免登录,false|true", dataType = "Boolean", defaultValue = "false")
+            @ApiImplicitParam(name = "username", value = "账号", required = true, defaultValue = "zhangsan", dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, defaultValue = "123456", dataType = "String"),
+            @ApiImplicitParam(name = "rememberme", value = "七天免登录", required = false, defaultValue = "false", dataType = "Boolean")
+
     })
-    public LoginVO login(@RequestBody Map<String, String> map, HttpServletResponse response) {
+    public LoginVO login(HttpServletResponse response, @RequestBody Map<String, String> map){
         String username = map.get("username");
         String password = map.get("password");
         Boolean rememberme = Boolean.valueOf(map.get("rememberme"));
         User user = userService.login(username, password, rememberme);
-        Map<String, String> result = new HashMap<>();
         Cookie cookie = new Cookie("token", user.getToken());
         cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60 * 7);//两个小时
+        cookie.setMaxAge(7 * 24 * 60 * 60);
         response.addCookie(cookie);
         LoginVO loginVO = new LoginVO();
         loginVO.setMsg("SUCCESS");
-        loginVO.setRedirect("/");
+        loginVO.setMsg("/");
         loginVO.setUser(user);
         return loginVO;
     }
 
+    @ApiOperation("退出")
     @RequestMapping(value = "/layout", method = RequestMethod.GET)
-    @ApiOperation(value = "退出登录")
-    @ResponseBody
-    public Map<String, String> layout(HttpServletResponse response) {
+    public HashMap<String, String> layout(){
         Cookie cookie = new Cookie("token", "");
-        cookie.setMaxAge(0);
         cookie.setPath("/");
-        response.addCookie(cookie);
-        Map<String, String> result = new HashMap<>();
+        cookie.setMaxAge(0);
+        HashMap<String, String> result =new HashMap<>();
         result.put("msg", "SUCCESS");
         return result;
     }

@@ -22,7 +22,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
                         .title("哲也项目")
-                        .description("知乎哲也，java学习之路漫漫，继续努力")
+                        .description("知乎哲也。。。。。。。。")
                         .version("1.0")
                         .build());
     }
