@@ -11,7 +11,10 @@ public enum MsgCodeEnum implements ErrorCode {
     REGISTERED_FAILED(305, "注册失败"),
     DATA_NONE(306, "数据不存在"),
     OPERATION_FAILED(307, "操作失败"),
-    PARAM_EMPTY(308, "参数不能为空");
+    PARAM_EMPTY(308, "参数不能为空"),
+    PARAM_ERROR(309, "参数错误"),
+    OPERATION_AGAIN(310, "请勿重复操作")
+    ;
 
     private int code;
     private String message;

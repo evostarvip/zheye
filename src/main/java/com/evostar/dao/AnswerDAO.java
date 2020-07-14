@@ -1,6 +1,7 @@
 package com.evostar.dao;
 
 import com.evostar.model.Answer;
+import com.evostar.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,7 @@ public interface AnswerDAO {
 
     @Select({"select count(*) from answer where question_id = #{qid}"})
     public int getCountByQid(@Param(value = "qid") int qid);
+
+    @Select({"select * from answer where id=#{id}"})
+    public Answer getById(int id);
 }

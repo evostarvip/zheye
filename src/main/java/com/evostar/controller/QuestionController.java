@@ -9,6 +9,7 @@ import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@Api(tags = "问题")
 public class QuestionController {
     @Autowired
     private HostHolder hostHolder;

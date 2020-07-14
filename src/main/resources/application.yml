@@ -6,6 +6,9 @@ spring:
     password: evostar2020
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 
 mybatis:
