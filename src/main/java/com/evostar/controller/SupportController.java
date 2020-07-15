@@ -21,6 +21,8 @@ public class SupportController {
     private HostHolder hostHolder;
     @Autowired
     private SupportService supportService;
+    @Autowired
+    private RedisUtils redisUtils;
 
     @ApiOperation(value = "点赞")
     @RequestMapping(path = {"/support"}, method = {RequestMethod.GET})
@@ -28,7 +30,7 @@ public class SupportController {
             @ApiImplicitParam(name = "id", value = "要点赞的id", defaultValue = "1", required = true),
             @ApiImplicitParam(name = "type", value = "类型，1是给question点赞，2是给answer，3是给comment", required = true, defaultValue = "1")
     })
-    public HashMap<String, String> support(@RequestParam(required = true) int id, @RequestParam(required = true) int type) {
+    public HashMap<String, String> support(@RequestParam(required = true) int id, @RequestParam(required = true) int type){
         //判断当前数据是否存在
         if(supportService.checkIsExist(id, type)){
             supportService.support(id, type, hostHolder.getUser().getId());
@@ -59,14 +61,14 @@ public class SupportController {
             @ApiImplicitParam(name = "id", value = "点赞的id", defaultValue = "1", required = true),
             @ApiImplicitParam(name = "type", value = "类型，1是给question，2是给answer，3是给comment", required = true, defaultValue = "1")
     })
-    public HashMap<String, String> cancelSupport(@RequestParam(required = true) int id, @RequestParam(required = true) int type){
+    public HashMap<String, String> cancelSupport(@RequestParam(required = true) int id, @RequestParam(required = true) int type) {
         if(supportService.checkIsExist(id, type)){
             String key = supportService.getKeyByType(type);
             if(key.equals("")){
                 throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
             }
-            key = key+"_UNSUPPORT_"+id;
-            RedisUtils.removeSetMember(key, String.valueOf(hostHolder.getUser().getId()));
+            key = key+"_SUPPORT_"+id;
+            redisUtils.removeSetMember(key, String.valueOf(hostHolder.getUser().getId()));
         }
         HashMap<String, String> result =new HashMap<>();
         result.put("msg", "SUCCESS");
@@ -85,8 +87,8 @@ public class SupportController {
             if(key.equals("")){
                 throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
             }
-            key = key+"_SUPPORT_"+id;
-            RedisUtils.removeSetMember(key, String.valueOf(hostHolder.getUser().getId()));
+            key = key+"_UNSUPPORT_"+id;
+            redisUtils.removeSetMember(key, String.valueOf(hostHolder.getUser().getId()));
         }
         HashMap<String, String> result =new HashMap<>();
         result.put("msg", "SUCCESS");

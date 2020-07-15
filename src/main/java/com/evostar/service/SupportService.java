@@ -7,11 +7,10 @@ import com.evostar.exception.ServiceException;
 import com.evostar.model.*;
 import com.evostar.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.rmi.ServerException;
 
 @Service
 public class SupportService {
@@ -23,6 +22,8 @@ public class SupportService {
     private AnswerDAO answerDAO;
     @Autowired
     private CommentDAO commentDAO;
+    @Autowired
+    private RedisUtils redisUtils;
 
     public Boolean checkIsExist(int id, int type){
         if(type == 0){
@@ -62,14 +63,14 @@ public class SupportService {
         return key;
     }
     //点赞、给点赞的集合增加数据
-    public Boolean support(int id, int type, int userId){
+    public Boolean support(int id, int type, int userId) {
         String key = getKeyByType(type);
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
-        //RedisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_SUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
+            redisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
             redisTemplate.boundSetOps(key+"_SUPPORT_"+id).add(String.valueOf(userId));
             return true;
         }else{
@@ -78,15 +79,15 @@ public class SupportService {
         }
     }
     //点赞、给点赞的集合增加数据
-    public Boolean unSupport(int id, int type, int userId){
+    public Boolean unSupport(int id, int type, int userId) {
         String key = getKeyByType(type);
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
-        //RedisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
             redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).add(String.valueOf(userId));
+            redisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
             return true;
         }else{
             //已经操作过了，

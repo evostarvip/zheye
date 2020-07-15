@@ -31,4 +31,26 @@ class SupportControllerTest extends ApplicationTests {
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
 
+    @Test
+    public void testSupportCalcel(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cookie",token);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> entity = restTemplate.exchange("/support_cancel?id=1&type=1", HttpMethod.GET, request, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+        Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    public void testUnSupportCalcel(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cookie",token);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> entity = restTemplate.exchange("/unsupport_cancel?id=1&type=1", HttpMethod.GET, request, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+        Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
+    }
+
 }
