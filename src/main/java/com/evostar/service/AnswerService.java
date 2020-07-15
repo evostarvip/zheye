@@ -46,4 +46,8 @@ public class AnswerService {
     public int getAnserCountByQid(int qid){
         return answerDAO.getCountByQid(qid);
     }
+
+    public Answer getById(int id){
+        return answerDAO.getById(id);
+    }
 }

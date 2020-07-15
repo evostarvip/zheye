@@ -68,9 +68,9 @@ public class SupportService {
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
+        redisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_SUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
-            redisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
             redisTemplate.boundSetOps(key+"_SUPPORT_"+id).add(String.valueOf(userId));
             return true;
         }else{
@@ -84,9 +84,9 @@ public class SupportService {
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
+        redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).add(String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
-            redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).add(String.valueOf(userId));
             redisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
             return true;
         }else{
