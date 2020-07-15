@@ -32,6 +32,6 @@ public class CommentController {
         int id = Integer.parseInt(map.get("id"));
         int type = Integer.parseInt(map.get("type"));
         String content = map.get("content");
-        commentService.addComment(id, type, content);
+        //commentService.addComment(id, type, content);
     }
 }
