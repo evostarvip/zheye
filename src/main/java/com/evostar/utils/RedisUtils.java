@@ -10,9 +10,9 @@ public class RedisUtils {
     private static RedisTemplate<String, String> redisTemplate;
 
     public static void removeSetMember(String key, String value){
-        Boolean res = redisTemplate.boundSetOps(key).isMember(value);
+        Boolean res = redisTemplate.opsForSet().isMember(key, value);
         if(res){
-            redisTemplate.boundSetOps(key).remove(value);
+            redisTemplate.opsForSet().remove(key, value);
         }
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.http.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SupportControllerTest extends ApplicationTests {
-    private String token = "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTRVJWSUNFIiwiZXhwIjoxNTk0NzAyNjk4LCJ1c2VySWQiOjEsInZlcnNpb24iOiIxLjAiLCJpYXQiOjE1OTQ2OTU0OTh9.RxVVMtsytccbMESXq2xBVBfjudhjIaAHifgw03X9of4";
+    private String token = "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTRVJWSUNFIiwiZXhwIjoxNTk1Mzg0MzE3LCJ1c2VySWQiOjEsInZlcnNpb24iOiIxLjAiLCJpYXQiOjE1OTQ3Nzk1MTd9.f-DWlFeH2DBWdW9-iUDvjA-ntX3wIidhRNA0qfNF-jY";
     @Test
     public void testSupport(){
         HttpHeaders headers = new HttpHeaders();
@@ -30,4 +30,5 @@ class SupportControllerTest extends ApplicationTests {
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
+
 }

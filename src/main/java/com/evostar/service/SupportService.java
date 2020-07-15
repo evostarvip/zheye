@@ -67,11 +67,10 @@ public class SupportService {
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
-        key = key+"_SUPPORT_"+id;
-        RedisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
-        Boolean res = redisTemplate.boundSetOps(key).isMember(String.valueOf(userId));
+        //RedisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
+        Boolean res = redisTemplate.boundSetOps(key+"_SUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
-            redisTemplate.boundSetOps(key).add(String.valueOf(userId));
+            redisTemplate.boundSetOps(key+"_SUPPORT_"+id).add(String.valueOf(userId));
             return true;
         }else{
             //已经操作过了，
@@ -84,11 +83,10 @@ public class SupportService {
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
-        key = key+"_UNSUPPORT_"+id;
-        RedisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
-        Boolean res = redisTemplate.boundSetOps(key).isMember(String.valueOf(userId));
+        //RedisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
+        Boolean res = redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
-            redisTemplate.boundSetOps(key+id).add(String.valueOf(userId));
+            redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).add(String.valueOf(userId));
             return true;
         }else{
             //已经操作过了，

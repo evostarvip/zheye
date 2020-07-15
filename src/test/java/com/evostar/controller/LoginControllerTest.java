@@ -29,6 +29,7 @@ class LoginControllerTest extends ApplicationTests {
         HashMap<String, String> map = new HashMap<>();
         map.put("username", "zhangSan");
         map.put("password", "123456");
+        map.put("rememberme","true");
         ResponseEntity<String> entity = restTemplate.postForEntity("/login", map, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
