@@ -84,10 +84,10 @@ public class SupportService {
         if(key.equals("")){
             throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
         }
-        redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).add(String.valueOf(userId));
+        redisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
-            redisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
+            redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).add(String.valueOf(userId));
             return true;
         }else{
             //已经操作过了，

@@ -14,9 +14,8 @@ public class RedisUtils {
 
     public void removeSetMember(String key, String value) {
         Boolean exist = redisTemplate.boundSetOps(key).isMember(value);
-        System.out.println(exist);
         if(exist){
-            redisTemplate.opsForSet().remove(key, value);
+            redisTemplate.boundSetOps(key).remove(value);
         }
     }
 }
