@@ -28,6 +28,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 
         registry.addInterceptor(userLoginInterceptor)
                 .addPathPatterns("/question/detail/**")
-                .addPathPatterns("/answerList/**");
+                .addPathPatterns("/answerList/**")
+                .addPathPatterns("/index");
     }
 }
