@@ -59,6 +59,7 @@ public class CommentController {
         if(type == 2){
             Comment comment1 = commentService.getById(id);
             comment.setResponded(comment1.getUserId());
+            comment.setEntityId(comment1.getEntityId());
         }
         if(commentService.addComment(comment) > 0){
             HashMap<String, String> result =new HashMap<>();
@@ -87,7 +88,7 @@ public class CommentController {
             CommentVO commentVO = new CommentVO();
             commentVO.setContent(comment.getContent());
             commentVO.setIsDisLike(supportService.isUnSupport(comment.getId(),3,hostHolder.getUser().getId()));
-            commentVO.setIsLike(supportService.isUnSupport(comment.getId(), 3, hostHolder.getUser().getId()));
+            commentVO.setIsLike(supportService.isSupport(comment.getId(), 3, hostHolder.getUser().getId()));
             commentVO.setLikeNum(supportService.supportNum(comment.getId(), 3));
             UserVO user = userService.getUserVO(comment.getUser());
             if(comment.getResponder() != null){
