@@ -31,4 +31,26 @@ class FollowControllerTest extends ApplicationTests {
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
+
+    @Test
+    public void testFollowQuestionCancel(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cookie",token);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> entity = restTemplate.exchange("/follow/question_cancel?id=1", HttpMethod.GET, request, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+        Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    public void testFollowUserCancel(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cookie",token);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> entity = restTemplate.exchange("/follow/user_cancel?id=1", HttpMethod.GET, request, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+        Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
+    }
 }
