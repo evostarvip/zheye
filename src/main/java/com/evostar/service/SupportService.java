@@ -26,12 +26,6 @@ public class SupportService {
     private RedisUtils redisUtils;
 
     public Boolean checkIsExist(int id, int type){
-        if(type == 0){
-            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY);
-        }
-        if(id == 0){
-            throw new ServiceException(MsgCodeEnum.PARAM_EMPTY);
-        }
         if(type == 1){
             Question question = questionDAO.getById(id);
             if(question == null){
@@ -93,6 +87,24 @@ public class SupportService {
             //已经操作过了，
             throw new ServiceException(MsgCodeEnum.OPERATION_AGAIN);
         }
+    }
+    //获取当前是否点赞
+    public Boolean isSupport(int id, int type, int userId){
+        String key = getKeyByType(type);
+        key = key+"_SUPPORT_"+id;
+        return redisTemplate.boundSetOps(key).isMember(String.valueOf(userId));
+    }
+    //获取当前是否点踩
+    public Boolean isUnSupport(int id, int type, int userId){
+        String key = getKeyByType(type);
+        key = key+"_UNSUPPORT_"+id;
+        return redisTemplate.boundSetOps(key).isMember(String.valueOf(userId));
+    }
+    //获取点赞数量
+    public int supportNum(int id, int type){
+        String key = getKeyByType(type);
+        key = key+"_SUPPORT_"+id;
+        return redisTemplate.boundSetOps(key).size().intValue();
     }
 
 

@@ -9,9 +9,12 @@ public class Comment {
     private int id;
     private String content;
     private int userId;
-    private byte entityId;
+    private int entityId;
     private int type;
-    private Date createDate;
-    private byte status;
+    private Date createdDate;
+    private int status;
     private int responded;
+
+    private User user;//回答的人
+    private User responder;//被回复的人
 }
