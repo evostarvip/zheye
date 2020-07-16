@@ -8,6 +8,7 @@ import com.evostar.model.HostHolder;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
+import com.evostar.service.FollowService;
 import com.evostar.service.QuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,9 +35,10 @@ public class QuestionController {
     private HostHolder hostHolder;
     @Autowired
     private QuestionService questionService;
-
     @Autowired
     private AnswerService answerService;
+    @Autowired
+    private FollowService followService;
     @ApiOperation("发布问题")
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     @ApiImplicitParams({
@@ -82,6 +84,7 @@ public class QuestionController {
         detailVO.setDetail(question.getContent());
         detailVO.setLookNum(question.getLookNum());
         detailVO.setTitle(question.getTitle());
+        detailVO.setFollowNum(followService.followQuestionNum(question.getId()));
         String summary = question.getContent() != null && question.getContent().length() > 50 ? question.getContent().substring(0, 50) + "......" : question.getContent();
         detailVO.setSummary(summary);
         return detailVO;

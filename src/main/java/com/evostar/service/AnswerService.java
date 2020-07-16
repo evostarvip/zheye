@@ -20,6 +20,9 @@ public class AnswerService {
     private SupportService supportService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommentService commentService;
+
     public int addAnswer(Answer answer){
         return answerDAO.addAnswer(answer);
     }
@@ -38,6 +41,7 @@ public class AnswerService {
         //暂留，后面开发点赞、评论时填充值
         actionsVO.setCollect(false);
         actionsVO.setAgreeNum(supportService.supportNum(answer.getId(), 2));
+        actionsVO.setReviewNum(commentService.getCommentByAnswerId(answer.getId()));//评论数量
         if(hostHolder.getUser() != null){
             actionsVO.setDisagree(supportService.isUnSupport(answer.getId(), 2, hostHolder.getUser().getId()));
             actionsVO.setIsAgree(supportService.isSupport(answer.getId(), 2, hostHolder.getUser().getId()));

@@ -48,4 +48,9 @@ public class CommentService {
     public int getCountByType(int id, int type){
         return commentDAO.getCountByType(id, type);
     }
+
+
+    public int getCommentByAnswerId(int answerId){
+        return commentDAO.getCommentByAnswerId(answerId);
+    }
 }

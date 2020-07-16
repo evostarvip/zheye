@@ -28,4 +28,8 @@ public interface CommentDAO {
                                                   @Param(value = "limit") int limit);
     @Select("select count(*) from comment where entity_id = #{id} and type = #{type}")
     public int getCountByType(@Param(value = "id") int id, @Param(value = "type") int type);
+
+    //回答的评论数量
+    @Select("select count(*) from comment where type = 1 and entity_id = #{answerId}")
+    public int getCommentByAnswerId(int answerId);
 }

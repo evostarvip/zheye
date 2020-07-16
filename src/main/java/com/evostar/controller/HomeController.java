@@ -61,7 +61,6 @@ public class HomeController {
             if(answer != null){
                 AnswerVO answerVO = answerService.getAnswerVO(answer);
                 indexVO.setDetail(answerVO);
-
                 indexVO.setAnswer(userService.getUserVO(answer.getAnswer()));
                 String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
                 answerContent = answerContent.length() > 50 ? answerContent.substring(0, 50) + "......" : answerContent;
