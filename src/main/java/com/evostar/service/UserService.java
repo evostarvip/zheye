@@ -81,7 +81,7 @@ public class UserService {
         userVO.setName(user.getName());
         userVO.setAnswerNum(answerDAO.getCountByUserId(user.getId()));
         if(hostHolder.getUser() != null){
-            userVO.setIsFollow(followService.isFollowUser(user.getId(),hostHolder.getUser().getId()));
+            userVO.setIsFollow(followService.isFollowUser(user.getId(), hostHolder.getUser().getId()));
         }
         userVO.setFollowNum(followService.followUserNum(user.getId()));
         return userVO;
