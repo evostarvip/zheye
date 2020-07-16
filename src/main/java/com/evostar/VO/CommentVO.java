@@ -1,6 +1,7 @@
 package com.evostar.VO;
 
 import com.evostar.model.User;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,6 +10,8 @@ import java.util.List;
 
 @Data
 public class CommentVO {
+    @ApiModelProperty(value = "评论的id")
+    private int id;
     @ApiModelProperty(value = "回复的人")
     private User user;
 
@@ -31,5 +34,5 @@ public class CommentVO {
     private Boolean isDisLike;
 
     @ApiModelProperty(value = "回复的数据")
-    private List<CommentVO> replies;
+    private CommentDataVO replies;
 }

@@ -3,7 +3,9 @@ package com.evostar.model;
 public enum EntityType {
     ENTITY_QUESTION(1, "QUESTION"),//给问题的互动
     ENTITY_ANSWER(2, "ANSWER"),//给回答的互动
-    ENTITY_COMMENT(3, "COMMENT");//给评论的互动
+    ENTITY_COMMENT(3, "COMMENT"),//给评论的互动
+    ENTITY_FOLLOW_QUESTION(4, "FOLLOW_QUESTION_"),//关注问题
+    ENTITY_FOLLOW_USER(5, "FOLLOW_USER_");//关注人
 
     int type;
     String key;

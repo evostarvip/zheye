@@ -44,4 +44,8 @@ public class CommentService {
     public List<Comment> getAnswerCommentListById(int entityId, int type, int offset, int limit){
         return commentDAO.getAnswerCommentListById(entityId, type, offset, limit);
     }
+
+    public int getCountByType(int id, int type){
+        return commentDAO.getCountByType(id, type);
+    }
 }

@@ -26,4 +26,6 @@ public interface CommentDAO {
                                                   @Param(value = "type") int type,
                                                   @Param(value = "offset") int offset,
                                                   @Param(value = "limit") int limit);
+    @Select("select count(*) from comment where entity_id = #{id} and type = #{type}")
+    public int getCountByType(@Param(value = "id") int id, @Param(value = "type") int type);
 }

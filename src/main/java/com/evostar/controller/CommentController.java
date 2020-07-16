@@ -1,6 +1,8 @@
 package com.evostar.controller;
 
+import com.evostar.VO.CommentDataVO;
 import com.evostar.VO.CommentVO;
+import com.evostar.dao.CommentDAO;
 import com.evostar.exception.ServiceException;
 import com.evostar.model.Comment;
 import com.evostar.model.HostHolder;
@@ -69,14 +71,15 @@ public class CommentController {
             @ApiImplicitParam(name = "id", value = "被回复的id", defaultValue = "1", dataType = "int", required = true),
             @ApiImplicitParam(name = "type", value = "1是回复answer，2是回复评论", defaultValue = "1", dataType = "int", required = true)
     })
-    public List<CommentVO> getComment(int id, int type, @RequestParam(required = false, defaultValue = "1") int page){
+    public CommentDataVO getComment(int id, int type, @RequestParam(required = false, defaultValue = "1") int page){
         return this.getCommentList(id, type, page);
     }
-    public List<CommentVO> getCommentList(int id, int type, int page){
+    //评论
+    public CommentDataVO getCommentList(int id, int type, int page){
         int limit = 20;
         int offset = (page - 1) * limit;
         List<Comment> list = commentService.getAnswerCommentListById(id, type, offset, limit);
-        return list.stream().map(comment -> {
+        List<CommentVO>  commentVOList = list.stream().map(comment -> {
             CommentVO commentVO = new CommentVO();
             commentVO.setContent(comment.getContent());
             commentVO.setIsDisLike(supportService.isUnSupport(comment.getId(),3,hostHolder.getUser().getId()));
@@ -85,11 +88,16 @@ public class CommentController {
             commentVO.setUser(comment.getUser());
             commentVO.setTime(comment.getCreatedDate());
             commentVO.setResponder(comment.getResponder());
+            commentVO.setId(comment.getId());
             if(type == 1){
-                List<CommentVO> replies = this.getCommentList(comment.getId(),2, 1);
+                CommentDataVO replies = this.getCommentList(comment.getId(),2, 1);
                 commentVO.setReplies(replies);
             }
             return commentVO;
         }).collect(Collectors.toList());
+        CommentDataVO commentDataVO = new CommentDataVO();
+        commentDataVO.setTotalNum(commentService.getCountByType(id, type));
+        commentDataVO.setData(commentVOList);
+        return commentDataVO;
     }
 }

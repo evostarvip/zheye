@@ -24,6 +24,8 @@ public class SupportService {
     private CommentDAO commentDAO;
     @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private EntityService entityService;
 
     public Boolean checkIsExist(int id, int type){
         if(type == 1){
@@ -45,23 +47,9 @@ public class SupportService {
         return true;
     }
 
-
-    public String getKeyByType(int type){
-        String key = "";
-        for (EntityType entityType : EntityType.values()){
-            if(entityType.getType() == type){
-                key = entityType.getKey();
-                break;
-            }
-        }
-        return key;
-    }
     //点赞、给点赞的集合增加数据
     public Boolean support(int id, int type, int userId) {
-        String key = getKeyByType(type);
-        if(key.equals("")){
-            throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
-        }
+        String key = entityService.getKeyByType(type);
         redisUtils.removeSetMember(key+"_UNSUPPORT_"+id, String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_SUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
@@ -74,10 +62,7 @@ public class SupportService {
     }
     //点赞、给点赞的集合增加数据
     public Boolean unSupport(int id, int type, int userId) {
-        String key = getKeyByType(type);
-        if(key.equals("")){
-            throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
-        }
+        String key = entityService.getKeyByType(type);
         redisUtils.removeSetMember(key+"_SUPPORT_"+id, String.valueOf(userId));
         Boolean res = redisTemplate.boundSetOps(key+"_UNSUPPORT_"+id).isMember(String.valueOf(userId));
         if(!res){
@@ -90,26 +75,26 @@ public class SupportService {
     }
     //获取当前是否点赞
     public Boolean isSupport(int id, int type, int userId){
-        String key = getKeyByType(type);
+        String key = entityService.getKeyByType(type);
         key = key+"_SUPPORT_"+id;
         return redisTemplate.boundSetOps(key).isMember(String.valueOf(userId));
     }
     //获取当前是否点踩
     public Boolean isUnSupport(int id, int type, int userId){
-        String key = getKeyByType(type);
+        String key = entityService.getKeyByType(type);
         key = key+"_UNSUPPORT_"+id;
         return redisTemplate.boundSetOps(key).isMember(String.valueOf(userId));
     }
     //获取点赞数量
     public int supportNum(int id, int type){
-        String key = getKeyByType(type);
+        String key = entityService.getKeyByType(type);
         key = key+"_SUPPORT_"+id;
         return redisTemplate.boundSetOps(key).size().intValue();
     }
 
     //获取踩的数量
     public int unSupportNum(int id, int type){
-        String key = getKeyByType(type);
+        String key = entityService.getKeyByType(type);
         key = key+"_UNSUPPORT_"+id;
         return redisTemplate.boundSetOps(key).size().intValue();
     }

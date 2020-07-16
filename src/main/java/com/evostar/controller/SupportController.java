@@ -3,6 +3,7 @@ package com.evostar.controller;
 import com.evostar.exception.ServiceException;
 import com.evostar.model.HostHolder;
 import com.evostar.model.MsgCodeEnum;
+import com.evostar.service.EntityService;
 import com.evostar.service.SupportService;
 import com.evostar.utils.RedisUtils;
 import io.swagger.annotations.Api;
@@ -23,6 +24,8 @@ public class SupportController {
     private SupportService supportService;
     @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private EntityService entityService;
 
     @ApiOperation(value = "点赞")
     @RequestMapping(path = {"/support"}, method = {RequestMethod.GET})
@@ -63,7 +66,7 @@ public class SupportController {
     })
     public HashMap<String, String> cancelSupport(@RequestParam(required = true) int id, @RequestParam(required = true) int type) {
         if(supportService.checkIsExist(id, type)){
-            String key = supportService.getKeyByType(type);
+            String key = entityService.getKeyByType(type);
             if(key.equals("")){
                 throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
             }
@@ -83,7 +86,7 @@ public class SupportController {
     })
     public HashMap<String, String> CancelUnSupport(@RequestParam(required = true) int id, @RequestParam(required = true) int type){
         if(supportService.checkIsExist(id, type)){
-            String key = supportService.getKeyByType(type);
+            String key = entityService.getKeyByType(type);
             if(key.equals("")){
                 throw new ServiceException(MsgCodeEnum.PARAM_ERROR);
             }

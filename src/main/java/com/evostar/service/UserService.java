@@ -60,4 +60,8 @@ public class UserService {
         user.setToken(token);
         return user;
     }
+
+    public User selectById(int id){
+        return userDAO.selectById(id);
+    }
 }
