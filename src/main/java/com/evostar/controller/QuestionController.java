@@ -80,6 +80,7 @@ public class QuestionController {
 
         QuestionDetailVO detailVO = new QuestionDetailVO();
         detailVO.setAnswerList(answerVOList);
+        detailVO.setId(question.getId());
         detailVO.setAnswerNum(answerService.getAnserCountByQid(qid));
         detailVO.setDetail(question.getContent());
         detailVO.setLookNum(question.getLookNum());
