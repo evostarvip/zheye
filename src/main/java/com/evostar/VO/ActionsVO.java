@@ -9,17 +9,17 @@ public class ActionsVO {
     private int reviewNum;
 
     @ApiModelProperty(value = "是否点赞")
-    private Boolean isAgree;
+    private Boolean isAgree = false;
 
     @ApiModelProperty(value = "点赞的数量")
     private int agreeNum;
 
     @ApiModelProperty(value = "是否踩了")
-    private boolean isDisagree;
+    private boolean isDisagree = false;
 
     @ApiModelProperty(value = "是否喜欢")
-    private boolean isLike;
+    private boolean isLike = false;
 
     @ApiModelProperty(value = "是否收藏")
-    private boolean isCollect;
+    private boolean isCollect = false;
 }

@@ -20,7 +20,9 @@ public interface QuestionDAO {
     public Question getById(int questionId);
 
 
-    List<Question> selectLatestQuestions(@Param("userId") int qIdList, @Param("offset") int offset,
+    List<Question> selectLatestQuestions(@Param("userId") int qIdList,
+                                         @Param("search") String search,
+                                         @Param("offset") int offset,
                                          @Param("limit") int limit);
 
 }

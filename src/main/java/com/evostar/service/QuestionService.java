@@ -36,8 +36,8 @@ public class QuestionService {
         }
     }
 
-    public List<Question> getLatestQuestions(int userId, int offset, int limit) {
-        return questionDAO.selectLatestQuestions(userId, offset, limit);
+    public List<Question> getLatestQuestions(int userId, String search, int offset, int limit) {
+        return questionDAO.selectLatestQuestions(userId, search, offset, limit);
     }
 
     public Question getById(int qid){

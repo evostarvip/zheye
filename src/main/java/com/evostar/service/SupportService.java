@@ -107,6 +107,13 @@ public class SupportService {
         return redisTemplate.boundSetOps(key).size().intValue();
     }
 
+    //获取踩的数量
+    public int unSupportNum(int id, int type){
+        String key = getKeyByType(type);
+        key = key+"_UNSUPPORT_"+id;
+        return redisTemplate.boundSetOps(key).size().intValue();
+    }
+
 
 
 

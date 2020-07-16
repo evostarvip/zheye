@@ -10,11 +10,15 @@
         <include refid="selectFields"/>
         FROM
         <include refid="table"/>
-
-        <if test="userId != 0">
-            WHERE user_id = #{userId}
-        </if>
+        <where>
+            <if test="userId != 0">
+                user_id = #{userId}
+            </if>
+            <if test="search != '' and search != null">
+                title like CONCAT('%',#{search},'%')
+            </if>
+        </where>
         ORDER BY id DESC
-        LIMIT #{offset},#{limit}
+        limit #{offset},#{limit}
     </select>
 </mapper>

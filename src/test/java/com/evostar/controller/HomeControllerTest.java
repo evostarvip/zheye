@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HomeControllerTest extends ApplicationTests {
     @Test
     public void testIndex(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/index", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/index?search=推荐", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);

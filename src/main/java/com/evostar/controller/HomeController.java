@@ -4,11 +4,14 @@ import com.evostar.VO.ActionsVO;
 import com.evostar.VO.AnswerVO;
 import com.evostar.VO.IndexVO;
 import com.evostar.model.Answer;
+import com.evostar.model.HostHolder;
 import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
+import com.evostar.service.SupportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,16 +28,27 @@ public class HomeController {
     private QuestionService questionService;
     @Autowired
     private AnswerService answerService;
+    @Autowired
+    private SupportService supportService;
+    @Autowired
+    private HostHolder hostHolder;
 
     @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
-    @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", defaultValue = "1")
-    public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page){
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", required = false, defaultValue = "1"),
+            @ApiImplicitParam(name = "search", value = "关键词搜索", required = false)
+    })
+    public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false) String search){
         int limit = 10;
         int offset = (page - 1) * limit;
-        List<Question> questionList = questionService.getLatestQuestions(0, offset, limit);
+        List<Question> questionList = questionService.getLatestQuestions(0, search, offset, limit);
         return questionList.stream().map(question -> {
             ActionsVO actionsVO = new ActionsVO();
-            actionsVO.setAgreeNum(0);
+            actionsVO.setAgreeNum(supportService.supportNum(question.getId(), 1));
+            if(hostHolder.getUser() != null){
+                actionsVO.setDisagree(supportService.isUnSupport(question.getId(), 1, hostHolder.getUser().getId()));
+                actionsVO.setIsAgree(supportService.isSupport(question.getId(), 1, hostHolder.getUser().getId()));
+            }
             IndexVO indexVO = new IndexVO();
             indexVO.setId(question.getId());
             indexVO.setActions(actionsVO);
