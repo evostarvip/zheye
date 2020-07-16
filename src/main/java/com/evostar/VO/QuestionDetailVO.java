@@ -23,4 +23,6 @@ public class QuestionDetailVO {
     private List<AnswerVO> answerList;
     @ApiModelProperty(value = "回答的数量")
     private int answerNum;
+    @ApiModelProperty(value = "是否关注该问题")
+    private Boolean isFollow;
 }

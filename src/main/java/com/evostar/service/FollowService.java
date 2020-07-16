@@ -45,4 +45,9 @@ public class FollowService {
         String key = entityService.getKeyByType(4);
         return redisTemplate.boundSetOps(key+questionId).size().intValue();
     }
+
+    public Boolean isFollowQuestion(int beFollowQId, int followUserId){
+        String key = entityService.getKeyByType(4);
+        return redisTemplate.boundSetOps(key+beFollowQId).isMember(String.valueOf(followUserId));
+    }
 }

@@ -87,6 +87,7 @@ public class QuestionController {
         detailVO.setFollowNum(followService.followQuestionNum(question.getId()));
         String summary = question.getContent() != null && question.getContent().length() > 50 ? question.getContent().substring(0, 50) + "......" : question.getContent();
         detailVO.setSummary(summary);
+        detailVO.setIsFollow(followService.isFollowQuestion(question.getId(), hostHolder.getUser().getId()));
         return detailVO;
     }
 }
