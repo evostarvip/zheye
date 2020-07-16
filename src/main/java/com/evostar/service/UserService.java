@@ -1,7 +1,10 @@
 package com.evostar.service;
 
+import com.evostar.VO.UserVO;
+import com.evostar.dao.AnswerDAO;
 import com.evostar.dao.UserDAO;
 import com.evostar.exception.ServiceException;
+import com.evostar.model.HostHolder;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.model.User;
 import com.evostar.utils.JwtUtils;
@@ -16,6 +19,12 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private AnswerDAO answerDAO;
+    @Autowired
+    private HostHolder hostHolder;
+    @Autowired
+    private FollowService followService;
     public int reg(String username, String password){
         if(StringUtils.isEmpty(username)){
             throw new ServiceException(MsgCodeEnum.ACCOUNT_EMPTY.getCode(),MsgCodeEnum.ACCOUNT_EMPTY.getMessage());
@@ -63,5 +72,18 @@ public class UserService {
 
     public User selectById(int id){
         return userDAO.selectById(id);
+    }
+
+    public UserVO getUserVO(User user){
+        UserVO userVO = new UserVO();
+        userVO.setId(user.getId());
+        userVO.setHeadUrl(user.getHeadUrl());
+        userVO.setName(user.getName());
+        userVO.setAnswerNum(answerDAO.getCountByUserId(user.getId()));
+        if(hostHolder.getUser() != null){
+            userVO.setIsFollow(followService.isFollowUser(user.getId(),hostHolder.getUser().getId()));
+        }
+        userVO.setFollowNum(followService.followUserNum(user.getId()));
+        return userVO;
     }
 }

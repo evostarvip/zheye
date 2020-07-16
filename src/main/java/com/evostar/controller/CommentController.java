@@ -2,6 +2,7 @@ package com.evostar.controller;
 
 import com.evostar.VO.CommentDataVO;
 import com.evostar.VO.CommentVO;
+import com.evostar.VO.UserVO;
 import com.evostar.dao.CommentDAO;
 import com.evostar.exception.ServiceException;
 import com.evostar.model.Comment;
@@ -9,6 +10,7 @@ import com.evostar.model.HostHolder;
 import com.evostar.model.MsgCodeEnum;
 import com.evostar.service.CommentService;
 import com.evostar.service.SupportService;
+import com.evostar.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,6 +33,8 @@ public class CommentController {
     private HostHolder hostHolder;
     @Autowired
     private SupportService supportService;
+    @Autowired
+    private UserService userService;
 
     @ApiOperation(value = "评论")
     @RequestMapping(value = "/comment/add", method = RequestMethod.POST)
@@ -85,9 +89,13 @@ public class CommentController {
             commentVO.setIsDisLike(supportService.isUnSupport(comment.getId(),3,hostHolder.getUser().getId()));
             commentVO.setIsLike(supportService.isUnSupport(comment.getId(), 3, hostHolder.getUser().getId()));
             commentVO.setLikeNum(supportService.supportNum(comment.getId(), 3));
-            commentVO.setUser(comment.getUser());
+            UserVO user = userService.getUserVO(comment.getUser());
+            if(comment.getResponder() != null){
+                UserVO responder = userService.getUserVO(comment.getResponder());
+                commentVO.setResponder(responder);
+            }
+            commentVO.setUser(user);
             commentVO.setTime(comment.getCreatedDate());
-            commentVO.setResponder(comment.getResponder());
             commentVO.setId(comment.getId());
             if(type == 1){
                 CommentDataVO replies = this.getCommentList(comment.getId(),2, 1);

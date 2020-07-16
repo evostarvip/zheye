@@ -27,4 +27,7 @@ public interface AnswerDAO {
 
     @Select({"select * from answer where id=#{id}"})
     public Answer getById(int id);
+
+    @Select({"select count(*) from answer where user_id = #{userId}"})
+    public int getCountByUserId(int userId);
 }

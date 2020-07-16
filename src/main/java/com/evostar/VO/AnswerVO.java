@@ -11,6 +11,6 @@ public class AnswerVO {
     private int userId;
     private String content;
     private Date createdDate;
-    private User answer;
+    private UserVO answer;
     private ActionsVO actions;
 }

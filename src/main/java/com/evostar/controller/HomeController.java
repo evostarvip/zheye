@@ -9,6 +9,7 @@ import com.evostar.model.Question;
 import com.evostar.service.AnswerService;
 import com.evostar.service.QuestionService;
 import com.evostar.service.SupportService;
+import com.evostar.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,6 +33,8 @@ public class HomeController {
     private SupportService supportService;
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
     @ApiImplicitParams({
@@ -58,7 +61,8 @@ public class HomeController {
             if(answer != null){
                 AnswerVO answerVO = answerService.getAnswerVO(answer);
                 indexVO.setDetail(answerVO);
-                indexVO.setAnswer(answer.getAnswer());
+
+                indexVO.setAnswer(userService.getUserVO(answer.getAnswer()));
                 String answerContent = answer.getContent().replaceAll("</?[^>]+>", "").replaceAll("<a>\\s*|\t|\r|\n</a>", "");;
                 answerContent = answerContent.length() > 50 ? answerContent.substring(0, 50) + "......" : answerContent;
                 indexVO.setSummary(answerContent);

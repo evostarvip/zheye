@@ -16,7 +16,7 @@ public class IndexVO {
     private String title;
 
     @ApiModelProperty(value = "回答的用户信息")
-    private User answer;
+    private UserVO answer;
 
     @ApiModelProperty(value = "回答的内容的简介")
     private String summary;

@@ -13,10 +13,10 @@ public class CommentVO {
     @ApiModelProperty(value = "评论的id")
     private int id;
     @ApiModelProperty(value = "回复的人")
-    private User user;
+    private UserVO user;
 
     @ApiModelProperty(value = "被回复的人")
-    private User responder;
+    private UserVO responder;
 
     @ApiModelProperty(value = "时间")
     private Date time;

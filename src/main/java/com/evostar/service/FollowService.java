@@ -17,19 +17,28 @@ public class FollowService {
     private RedisUtils redisUtils;
 
     //关注、
-    public Boolean follow(int id, int type, int userId) {
+    public Boolean follow(int beFollowedId, int type, int followUserId) {
         String key = entityService.getKeyByType(type);
-        Boolean res = redisTemplate.boundSetOps(key+id).isMember(String.valueOf(userId));
+        Boolean res = redisTemplate.boundSetOps(key+beFollowedId).isMember(String.valueOf(followUserId));
         if(!res){
-            redisTemplate.boundSetOps(key+id).add(String.valueOf(userId));
+            redisTemplate.boundSetOps(key+beFollowedId).add(String.valueOf(followUserId));
             return true;
         }else{
             //已经操作过了，
             throw new ServiceException(MsgCodeEnum.OPERATION_AGAIN);
         }
     }
-    public void followCancel(int id, int type, int userId){
+    public void followCancel(int beFollowedId, int type, int followUserId){
         String key = entityService.getKeyByType(type);
-        redisUtils.removeSetMember(key+id, String.valueOf(userId));
+        redisUtils.removeSetMember(key+beFollowedId, String.valueOf(followUserId));
+    }
+
+    public Boolean isFollowUser(int beFollowUserId, int followUserId){
+        String key = entityService.getKeyByType(5);
+        return redisTemplate.boundSetOps(key+beFollowUserId).isMember(String.valueOf(followUserId));
+    }
+    public int followUserNum(int beFollowUserId){
+        String key = entityService.getKeyByType(5);
+        return redisTemplate.boundSetOps(key+beFollowUserId).size().intValue();
     }
 }

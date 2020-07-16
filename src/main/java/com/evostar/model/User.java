@@ -1,5 +1,6 @@
 package com.evostar.model;
 
+
 import lombok.Data;
 
 @Data

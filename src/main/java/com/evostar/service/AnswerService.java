@@ -18,6 +18,8 @@ public class AnswerService {
     private HostHolder hostHolder;
     @Autowired
     private SupportService supportService;
+    @Autowired
+    private UserService userService;
     public int addAnswer(Answer answer){
         return answerDAO.addAnswer(answer);
     }
@@ -29,7 +31,7 @@ public class AnswerService {
     public AnswerVO getAnswerVO(Answer answer) {
         AnswerVO answerVO = new AnswerVO();
         answerVO.setId(answer.getId());
-        answerVO.setAnswer(answer.getAnswer());
+        answerVO.setAnswer(userService.getUserVO(answer.getAnswer()));
         answerVO.setContent(answer.getContent());
         answerVO.setCreatedDate(answer.getCreatedDate());
         ActionsVO actionsVO = new ActionsVO();
@@ -54,5 +56,9 @@ public class AnswerService {
 
     public Answer getById(int id){
         return answerDAO.getById(id);
+    }
+
+    public int getCountByUserId(int userId){
+        return answerDAO.getCountByUserId(userId);
     }
 }
