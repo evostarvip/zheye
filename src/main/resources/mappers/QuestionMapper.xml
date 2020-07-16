@@ -21,4 +21,18 @@
         ORDER BY id DESC
         limit #{offset},#{limit}
     </select>
+
+
+    <select id="selectLatestFollowedQuestions" resultType="question">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        <include refid="table"/>
+        where user_id in
+            <foreach collection="userList" item="item" open="(" close=")" separator="," index="k">
+                #{item}
+            </foreach>
+        ORDER BY id DESC
+        limit #{offset},#{limit}
+    </select>
 </mapper>

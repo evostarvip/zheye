@@ -25,4 +25,8 @@ public interface QuestionDAO {
                                          @Param("offset") int offset,
                                          @Param("limit") int limit);
 
+    List<Question> selectLatestFollowedQuestions(@Param("userList") List<String> userList,
+                                                 @Param("offset") int offset,
+                                                 @Param("limit") int limit);
+
 }

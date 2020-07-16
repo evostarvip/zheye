@@ -3,12 +3,13 @@ package com.evostar.controller;
 import com.evostar.ApplicationTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HomeControllerTest extends ApplicationTests {
+    private String token = "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTRVJWSUNFIiwiZXhwIjoxNTk1Mzg0MzE3LCJ1c2VySWQiOjEsInZlcnNpb24iOiIxLjAiLCJpYXQiOjE1OTQ3Nzk1MTd9.f-DWlFeH2DBWdW9-iUDvjA-ntX3wIidhRNA0qfNF-jY";
+
     @Test
     public void testIndex(){
         ResponseEntity<String> entity = restTemplate.getForEntity("/index?search=推荐", String.class);
@@ -16,5 +17,15 @@ class HomeControllerTest extends ApplicationTests {
         System.out.println(entity.getBody());
         Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
-
+    //followList
+    @Test
+    public void testFollowList(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cookie",token);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> entity = restTemplate.exchange("/followList", HttpMethod.GET, request, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+        Assertions.assertEquals(entity.getStatusCode(), HttpStatus.OK);
+    }
 }

@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class FollowService {
     @Autowired
@@ -21,7 +25,11 @@ public class FollowService {
         String key = entityService.getKeyByType(type);
         Boolean res = redisTemplate.boundSetOps(key+beFollowedId).isMember(String.valueOf(followUserId));
         if(!res){
+            //以问题为中心
             redisTemplate.boundSetOps(key+beFollowedId).add(String.valueOf(followUserId));
+            //以当前登录的人为中心
+            key = entityService.getKeyByType(type+2);
+            redisTemplate.boundSetOps(key+followUserId).add(String.valueOf(beFollowedId));
             return true;
         }else{
             //已经操作过了，
@@ -31,6 +39,8 @@ public class FollowService {
     public void followCancel(int beFollowedId, int type, int followUserId){
         String key = entityService.getKeyByType(type);
         redisUtils.removeSetMember(key+beFollowedId, String.valueOf(followUserId));
+        key = entityService.getKeyByType(type+2);
+        redisUtils.removeSetMember(key+followUserId, String.valueOf(beFollowedId));
     }
 
     public Boolean isFollowUser(int beFollowUserId, int followUserId){
@@ -49,5 +59,12 @@ public class FollowService {
     public Boolean isFollowQuestion(int beFollowQId, int followUserId){
         String key = entityService.getKeyByType(4);
         return redisTemplate.boundSetOps(key+beFollowQId).isMember(String.valueOf(followUserId));
+    }
+
+    //获取我关注的人
+    public List<String> getFollowedUser(int userId){
+        String key = entityService.getKeyByType(7);
+        Set<String> users =  redisTemplate.boundSetOps(key+userId).members();
+        return new ArrayList<>(users);
     }
 }
