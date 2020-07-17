@@ -72,10 +72,11 @@ public class LoginController {
 
     @ApiOperation("退出")
     @RequestMapping(value = "/layout", method = RequestMethod.GET)
-    public HashMap<String, String> layout(){
+    public HashMap<String, String> layout(HttpServletResponse response){
         Cookie cookie = new Cookie("token", "");
         cookie.setPath("/");
         cookie.setMaxAge(0);
+        response.addCookie(cookie);
         HashMap<String, String> result =new HashMap<>();
         result.put("msg", "SUCCESS");
         return result;
