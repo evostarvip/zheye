@@ -1,6 +1,7 @@
 package com.evostar.interceptor;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.evostar.annotation.Token;
 import com.evostar.dao.UserDAO;
 import com.evostar.exception.UnauthorizedException;
 import com.evostar.model.HostHolder;
@@ -10,6 +11,7 @@ import com.evostar.utils.EhcacheUtils;
 import com.evostar.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,7 +36,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private EhcacheUtils ehcacheUtils;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object handler) {
         String token = null;
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -56,8 +58,14 @@ public class TokenInterceptor implements HandlerInterceptor {
                 user = (User) ehcacheUtils.get(cacheName, TOKEN_PRE+userId);
             }
             hostHolder.setUser(user);
+
             return true;
         }else{
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            Token token1 = handlerMethod.getMethod().getAnnotation(Token.class);
+            if(token1 != null && token1.value().equals("avoid")){
+                return true;
+            }
             throw new UnauthorizedException();
         }
     }

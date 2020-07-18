@@ -2,6 +2,7 @@ package com.evostar.controller;
 
 import com.evostar.VO.AnswerVO;
 import com.evostar.VO.QuestionDetailVO;
+import com.evostar.annotation.Token;
 import com.evostar.exception.ServiceException;
 import com.evostar.model.Answer;
 import com.evostar.model.HostHolder;
@@ -66,6 +67,7 @@ public class QuestionController {
 
     //问题详情
     @ApiOperation(value = "问题详情")
+    @Token(value = "")
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
     @RequestMapping(value = "/question/detail", method = {RequestMethod.GET})
     public QuestionDetailVO QuestionDetail(int qid){

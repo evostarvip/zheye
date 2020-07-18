@@ -3,6 +3,7 @@ package com.evostar.controller;
 import com.evostar.VO.ActionsVO;
 import com.evostar.VO.AnswerVO;
 import com.evostar.VO.IndexVO;
+import com.evostar.annotation.Token;
 import com.evostar.exception.ServiceException;
 import com.evostar.model.Answer;
 import com.evostar.model.HostHolder;
@@ -47,6 +48,7 @@ public class HomeController {
             @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", required = false, defaultValue = "1"),
             @ApiImplicitParam(name = "search", value = "关键词搜索", required = false)
     })
+    @Token
     public List<IndexVO> index(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search){
         int limit = 10;
         int offset = (page - 1) * limit;
@@ -56,6 +58,7 @@ public class HomeController {
 
     @ApiImplicitParam(name = "search", value = "关键词搜索", required = false)
     @RequestMapping(path = {"/search"}, method = {RequestMethod.GET})
+    @Token
     public List<IndexVO> search(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(required = false) String search){
         int limit = pageable.getPageSize();
         List<Question> questionList = esService.selectByTitleLike(search, pageable);

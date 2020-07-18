@@ -1,6 +1,7 @@
 package com.evostar.controller;
 
 import com.evostar.VO.AnswerVO;
+import com.evostar.annotation.Token;
 import com.evostar.exception.ServiceException;
 import com.evostar.model.Answer;
 import com.evostar.model.HostHolder;
@@ -70,6 +71,7 @@ public class AnswerController {
             @ApiImplicitParam(name = "page", value = "分页，不填默认1", dataType = "int", defaultValue = "1")
     })
     @RequestMapping(value = "/answerList", method = {RequestMethod.GET})
+    @Token
     public List<AnswerVO> answerList(int qid, @RequestParam(required = false, defaultValue = "1") int page) {
         int limit = 20;
         int offset = (page - 1) * limit;
