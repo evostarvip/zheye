@@ -9,6 +9,7 @@ import com.evostar.utils.EhcacheUtils;
 import com.evostar.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,7 +34,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     private EhcacheUtils ehcacheUtils;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object handler) {
         String token = null;
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -56,6 +57,9 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             }
             hostHolder.setUser(user);
         }
+
+//        HandlerMethod handlerMethod = (HandlerMethod) handler;
+//        ((HandlerMethod) handler).getMethod().getAnnotation(NeedRoles.class);
         return true;
     }
 

@@ -16,11 +16,15 @@ public class QuestionService {
     private SensitiveService sensitiveService;
     @Autowired
     private QuestionDAO questionDAO;
+    @Autowired
+    private EsService esService;
+
     public int addQuestion(Question question){
         question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
         question.setContent(HtmlUtils.htmlEscape(question.getContent()));
         question.setTitle(sensitiveService.filter(question.getTitle()));
         question.setContent(sensitiveService.filter(question.getContent()));
+        esService.add(question);
         return questionDAO.addQuestion(question);
     }
 

@@ -36,6 +36,7 @@ public class CommentController {
     @Autowired
     private UserService userService;
 
+//    @NeedRole({"anonymous", "login", "admin"})
     @ApiOperation(value = "评论")
     @RequestMapping(value = "/comment/add", method = RequestMethod.POST)
     @ApiImplicitParams({

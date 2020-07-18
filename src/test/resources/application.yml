@@ -15,3 +15,9 @@ mybatis:
   mapper-locations: mappers/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
+
+elasticSearch:
+  hostlist: 127.0.0.1:9200
+  client:
+    connectNum: 10
+    connectPerRoute: 50

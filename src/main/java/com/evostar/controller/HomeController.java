@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,16 +39,26 @@ public class HomeController {
     private UserService userService;
     @Autowired
     private FollowService followService;
+    @Autowired
+    private EsService esService;
 
     @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "请求第几页，不填默认为1", required = false, defaultValue = "1"),
             @ApiImplicitParam(name = "search", value = "关键词搜索", required = false)
     })
-    public List<IndexVO> index(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false) String search){
+    public List<IndexVO> index(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search){
         int limit = 10;
         int offset = (page - 1) * limit;
         List<Question> questionList = questionService.getLatestQuestions(0, search, offset, limit);
+        return this.questionVO(questionList);
+    }
+
+    @ApiImplicitParam(name = "search", value = "关键词搜索", required = false)
+    @RequestMapping(path = {"/search"}, method = {RequestMethod.GET})
+    public List<IndexVO> search(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(required = false) String search){
+        int limit = pageable.getPageSize();
+        List<Question> questionList = esService.selectByTitleLike(search, pageable);
         return this.questionVO(questionList);
     }
     @ApiOperation(value = "获取关注列表")
