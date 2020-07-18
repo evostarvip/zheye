@@ -24,8 +24,11 @@ public class QuestionService {
         question.setContent(HtmlUtils.htmlEscape(question.getContent()));
         question.setTitle(sensitiveService.filter(question.getTitle()));
         question.setContent(sensitiveService.filter(question.getContent()));
-        esService.add(question);
-        return questionDAO.addQuestion(question);
+        int qid = questionDAO.addQuestion(question);
+        if(qid >0){
+            esService.add(question);
+        }
+        return qid;
     }
 
 

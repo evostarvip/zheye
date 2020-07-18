@@ -47,6 +47,6 @@ public class ExAppTest extends ApplicationTests {
 
     @Test
     public void deleteAll(){
-        esService.deleteByTitle("你");
+        esService.deleteByTitle("我");
     }
 }
