@@ -67,7 +67,7 @@ public class QuestionController {
 
     //问题详情
     @ApiOperation(value = "问题详情")
-    @Token(value = "")
+    @Token
     @ApiImplicitParam(name = "qid", value = "question的id", dataType = "int", defaultValue = "1", required = true)
     @RequestMapping(value = "/question/detail", method = {RequestMethod.GET})
     public QuestionDetailVO QuestionDetail(int qid){
@@ -90,7 +90,9 @@ public class QuestionController {
         detailVO.setFollowNum(followService.followQuestionNum(question.getId()));
         String summary = question.getContent() != null && question.getContent().length() > 50 ? question.getContent().substring(0, 50) + "......" : question.getContent();
         detailVO.setSummary(summary);
-        detailVO.setIsFollow(followService.isFollowQuestion(question.getId(), hostHolder.getUser().getId()));
+        if(hostHolder.getUser() != null){
+            detailVO.setIsFollow(followService.isFollowQuestion(question.getId(), hostHolder.getUser().getId()));
+        }
         return detailVO;
     }
 }
