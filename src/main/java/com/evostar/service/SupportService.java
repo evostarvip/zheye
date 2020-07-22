@@ -19,6 +19,8 @@ public class SupportService {
     @Autowired
     private QuestionDAO questionDAO;
     @Autowired
+    private QuestionService questionService;
+    @Autowired
     private AnswerDAO answerDAO;
     @Autowired
     private CommentDAO commentDAO;
@@ -29,7 +31,7 @@ public class SupportService {
 
     public Boolean checkIsExist(int id, int type){
         if(type == 1){
-            Question question = questionDAO.getById(id);
+            Question question = questionService.getById(id);
             if(question == null){
                 throw new ServiceException(MsgCodeEnum.DATA_NONE);
             }

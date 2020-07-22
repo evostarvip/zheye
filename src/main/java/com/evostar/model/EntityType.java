@@ -6,8 +6,8 @@ public enum EntityType {
     ENTITY_COMMENT(3, "COMMENT"),//给评论的互动
     ENTITY_FOLLOWED_QUESTION(4, "FOLLOWED_QUESTION_"),//关注问题，以问题祝中心
     ENTITY_FOLLOWED_USER(5, "FOLLOWED_USER_"),//关注人
-    ENTITY_FOLLOW_QUESTION(6, "FOLLOW_QUESTION_"),//以当前登录人为中心
-    ENTITY_FOLLOW_USER(7, "FOLLOW_USER_");
+    ENTITY_FOLLOW_QUESTIONS(6, "FOLLOW_QUESTION_"),//以当前登录人为中心
+    ENTITY_FOLLOW_USERS(7, "FOLLOW_USER_");
 
     int type;
     String key;

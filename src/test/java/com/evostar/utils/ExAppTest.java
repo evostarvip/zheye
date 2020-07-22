@@ -36,7 +36,7 @@ public class ExAppTest extends ApplicationTests {
     @Test
     public void getData(){
         Pageable pageable = PageRequest.of(0, 10);
-        List<Question> list = esService.selectByTitleLike("l", pageable);
+        List<Question> list = esService.selectByTitleLike("短发", pageable);
         System.out.println(list);
     }
     @Test

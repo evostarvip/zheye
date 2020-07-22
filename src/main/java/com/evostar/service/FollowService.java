@@ -43,6 +43,7 @@ public class FollowService {
         redisUtils.removeSetMember(key+followUserId, String.valueOf(beFollowedId));
     }
 
+
     public Boolean isFollowUser(int beFollowUserId, int followUserId){
         String key = entityService.getKeyByType(5);
         return redisTemplate.boundSetOps(key+beFollowUserId).isMember(String.valueOf(followUserId));

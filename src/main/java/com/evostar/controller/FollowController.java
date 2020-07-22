@@ -46,9 +46,6 @@ public class FollowController {
     @RequestMapping(value = "/follow/question_cancel", method = RequestMethod.GET)
     @ApiImplicitParam(name = "id", value = "问题的id", dataType = "int", required = true)
     public HashMap<String, String> followCancelQuestion(int id){
-        if(questionService.getById(id) == null){
-            throw new ServiceException(MsgCodeEnum.DATA_NONE);
-        }
         followService.followCancel(id, 4, hostHolder.getUser().getId());
         HashMap<String, String> result =new HashMap<>();
         result.put("msg", "SUCCESS");
@@ -72,9 +69,6 @@ public class FollowController {
     @RequestMapping(value = "/follow/user_cancel", method = RequestMethod.GET)
     @ApiImplicitParam(name = "id", value = "人的id", dataType = "int", required = true)
     public HashMap<String, String> followCancelUser(int id){
-        if(questionService.getById(id) == null){
-            throw new ServiceException(MsgCodeEnum.DATA_NONE);
-        }
         followService.followCancel(id, 5, hostHolder.getUser().getId());
         HashMap<String, String> result =new HashMap<>();
         result.put("msg", "SUCCESS");
