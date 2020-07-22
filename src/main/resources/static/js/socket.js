@@ -188,7 +188,7 @@ function sendToUser(toUserId, content) {
 function logout() {
     let requestPacket = {
         version: 1,
-        command: 5
+        event: 5
     };
     send(requestPacket);
 }

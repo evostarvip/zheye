@@ -1,6 +1,6 @@
 package com.evostar.netty.response;
 
-import com.evostar.netty.command.Event;
+import com.evostar.netty.command.Command;
 import com.evostar.netty.protocol.Packet;
 import lombok.Data;
 
@@ -19,7 +19,7 @@ public class LoginResponsePacket extends Packet {
     private String reason;
 
     @Override
-    public Byte getEvent() {
-        return Event.LOGIN_RESPONSE;
+    public Byte getCommand() {
+        return Command.LOGIN_RESPONSE;
     }
 }

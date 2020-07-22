@@ -3,7 +3,7 @@ package com.evostar.netty.command;
 /**
  * 指令
  */
-public interface Event {
+public interface Command {
 
     Byte LOGIN_REQUEST = 1;
     Byte LOGIN_RESPONSE = 2;

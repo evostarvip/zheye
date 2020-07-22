@@ -1,7 +1,7 @@
 package com.evostar.netty.protocol;
 
 
-import com.evostar.netty.command.Event;
+import com.evostar.netty.command.Command;
 import com.evostar.netty.request.LoginRequestPacket;
 import com.evostar.netty.request.MessageRequestPacket;
 import com.evostar.netty.response.LoginResponsePacket;
@@ -32,12 +32,12 @@ public class PacketCodeC {
 
     static {
         packetTypeMap = new HashMap<>();
-        packetTypeMap.put(Event.LOGIN_REQUEST, LoginRequestPacket.class);
-        packetTypeMap.put(Event.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         //packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
         //packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
-        packetTypeMap.put(Event.MESSAGE_REQUEST, MessageRequestPacket.class);
-        packetTypeMap.put(Event.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
@@ -61,7 +61,7 @@ public class PacketCodeC {
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
         byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
-        byteBuf.writeByte(packet.getEvent());
+        byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
     }
@@ -87,8 +87,8 @@ public class PacketCodeC {
         System.out.println("serializeAlgorithm = " + serializeAlgorithm);
 
         // 指令
-        byte event = byteBuf.readByte();
-        System.out.println("command = " + event);
+        byte command = byteBuf.readByte();
+        System.out.println("command = " + command);
 
         // 数据包长度
         int lenght = byteBuf.readInt();
@@ -100,7 +100,7 @@ public class PacketCodeC {
         System.out.println("bytes = " + Arrays.toString(bytes));
 
         // 根据指令获取数据的原类型
-        Class<? extends Packet> requestType = packetTypeMap.get(event);
+        Class<? extends Packet> requestType = packetTypeMap.get(command);
         // 根据序列化算法获取序列化器
         Serializer serializer = serializerMap.get(serializeAlgorithm);
 

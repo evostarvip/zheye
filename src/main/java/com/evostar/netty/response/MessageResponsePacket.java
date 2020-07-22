@@ -1,7 +1,7 @@
 package com.evostar.netty.response;
 
 import com.evostar.VO.UserVO;
-import com.evostar.netty.command.Event;
+import com.evostar.netty.command.Command;
 import com.evostar.netty.protocol.Packet;
 import lombok.Data;
 
@@ -23,7 +23,7 @@ public class MessageResponsePacket extends Packet {
     private int unreadNum = 0;
 
     @Override
-    public Byte getEvent() {
-        return Event.MESSAGE_RESPONSE;
+    public Byte getCommand() {
+        return Command.MESSAGE_RESPONSE;
     }
 }
