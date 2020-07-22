@@ -33,6 +33,8 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
         // 拿到消息发送方的会话信息
         Session session = SessionUtil.getSession(ctx.channel());
+        System.out.println("这里是解析messageRequest");
+        System.out.println(msg);
 
         // 构造信息
         MessageResponsePacket messageResponsePacket = new MessageResponsePacket();

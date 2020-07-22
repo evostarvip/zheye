@@ -1,7 +1,7 @@
 package com.evostar.netty.request;
 
 import com.evostar.model.User;
-import com.evostar.netty.command.Command;
+import com.evostar.netty.command.Event;
 import com.evostar.netty.protocol.Packet;
 import lombok.Data;
 
@@ -18,8 +18,8 @@ public class LoginRequestPacket extends Packet {
     private String userId;
 
     @Override
-    public Byte getCommand() {
-        return Command.LOGIN_REQUEST;
+    public Byte getEvent() {
+        return Event.LOGIN_REQUEST;
     }
 
 }
