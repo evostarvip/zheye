@@ -72,7 +72,9 @@ public class ChatRecordController {
             chatListVO.setUser(userService.getUserVO(user));
             List<ChatRecordVO> chatRecords = chatRecordService.getChatList(user.getId(), hostHolder.getUser().getId(),0, 1);
             if(chatRecords.size() > 0){
-                chatListVO.setContent(chatRecords.get(0).getContent());
+                String content = chatRecords.get(0).getContent();
+                String summary = content.length() >= 10 ? content.substring(0, 10)+"....." : content;
+                chatListVO.setContent(summary);
                 chatListVO.setTime(chatRecords.get(0).getTime());
             }
             int unreadNum = chatRecordService.getUnreadNum(user.getId(), hostHolder.getUser().getId());
