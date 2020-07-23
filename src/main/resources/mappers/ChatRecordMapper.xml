@@ -6,12 +6,12 @@
         <id property="id" column="id"></id>
         <result property="content" column="content"></result>
         <result property="time" column="time"></result>
-        <association property="fromUserId" javaType="com.evostar.VO.UserVO">
+        <association property="fromUser" javaType="com.evostar.VO.UserVO">
             <result property="id" column="fromUserId"></result>
             <result property="name" column="fromUserName"></result>
             <result property="headUrl" column="fromUserHeadUrl"></result>
         </association>
-        <association property="toUserId" javaType="com.evostar.VO.UserVO">
+        <association property="toUser" javaType="com.evostar.VO.UserVO">
             <result property="id" column="toUserId"></result>
             <result property="name" column="toUserName"></result>
             <result property="headUrl" column="toUserHeadUrl"></result>
