@@ -17,26 +17,10 @@ public class NettyProperties {
     private String protocol = "WebSocket";
 
     /**
-     * Tcp配置
-     */
-    private final Tcp tcp = new Tcp();
-
-    /**
      * WebSocket配置
      */
     private final Websocket websocket = new Websocket();
 
-    /**
-     * Tcp配置
-     */
-    @Data
-    public static class Tcp {
-        /**
-         * Tcp端口
-         */
-        private int port = 8888;
-
-    }
     /**
      * WebSocket配置
      */

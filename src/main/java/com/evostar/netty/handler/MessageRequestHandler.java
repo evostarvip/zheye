@@ -48,12 +48,13 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         User toUser = userService.selectById(Integer.parseInt(msg.getToUserId()));
         if(toUser != null){
             // 拿到消息接收方的 Channel
+            messageResponsePacket.setToUser(userService.getUserVO(toUser));
             Channel toUserChannel = SessionUtil.getChannel(msg.getToUserId());
             this.save_record(messageResponsePacket);
             // 将消息发给消息接收方
+            ctx.channel().writeAndFlush(messageResponsePacket);
             if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
                 //通知
-                ctx.channel().writeAndFlush(messageResponsePacket);
                 toUserChannel.writeAndFlush(messageResponsePacket);
             }
         }else{
