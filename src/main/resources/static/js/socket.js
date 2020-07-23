@@ -51,8 +51,6 @@ if (window.WebSocket) {
         // 解码
         console.log(event.data);
         let packet = decode(event.data);
-        console.log("packet：")
-        console.log(packet);
         // 显示指令，只是用于调试
         showCommand(packet.command);
         // 派发接收数据事件

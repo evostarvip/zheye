@@ -16,6 +16,8 @@ public class MessageResponsePacket extends Packet {
      */
     private UserVO fromUser;
 
+    private UserVO toUser;
+
     private String content;
 
     private String time;

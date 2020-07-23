@@ -1,5 +1,6 @@
 package com.evostar.netty.handler;
 
+import com.evostar.VO.UserVO;
 import com.evostar.dao.UserDAO;
 import com.evostar.model.User;
 import com.evostar.netty.request.MessageRequestPacket;
@@ -41,12 +42,16 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         messageResponsePacket.setFromUser(session.getUserVO());
         messageResponsePacket.setTime(msg.getTime());
         messageResponsePacket.setContent(msg.getContent());
+        User toUser = userService.selectById(Integer.parseInt(msg.getToUserId()));
 
         // 拿到消息接收方的 Channel
         Channel toUserChannel = SessionUtil.getChannel(msg.getToUserId());
 
         // 将消息发给消息接收方
-        if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
+        if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel) && toUser != null) {
+            UserVO toUserVO = userService.getUserVO(toUser);
+            messageResponsePacket.setToUser(toUserVO);
+            ctx.channel().writeAndFlush(messageResponsePacket);
             toUserChannel.writeAndFlush(messageResponsePacket);
         } else {
             System.out.println("[" + msg.getToUserId() + "]不在线，发送失败!");
