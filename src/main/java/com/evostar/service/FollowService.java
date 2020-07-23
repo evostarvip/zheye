@@ -68,4 +68,10 @@ public class FollowService {
         Set<String> users =  redisTemplate.boundSetOps(key+userId).members();
         return new ArrayList<>(users);
     }
+    //获取关注我的人
+    public List<String> getFollowUser(int userId){
+        String key = entityService.getKeyByType(5);
+        Set<String> users =  redisTemplate.boundSetOps(key+userId).members();
+        return new ArrayList<>(users);
+    }
 }

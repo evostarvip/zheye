@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class ChatRecord {
     private int id;
-    private UserVO fromUser;
-    private UserVO toUser;
+    private int fromUserId;
+    private int toUserId;
     private String content;
     private int time;
 }

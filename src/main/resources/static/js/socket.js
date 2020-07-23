@@ -149,7 +149,6 @@ function showCommand(command) {
         default:
             break;
     }
-    console.log("指令 = " + command + ", 指令功能 = " + funStr);
 }
 
 /**

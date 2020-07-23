@@ -3,8 +3,11 @@ package com.evostar.dao;
 import com.evostar.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @Mapper
@@ -18,4 +21,7 @@ public interface UserDAO {
 
     @Select("select * from user where id = #{id}")
     public User selectById(int id);
+
+
+    public List<User> getUserByIds(@Param(value = "userIdList") List<String> userIdList);
 }
